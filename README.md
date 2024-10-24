@@ -1,7 +1,8 @@
 Roles de Autentificacion:
 Admin
 Correo:Admin@gmail.com
-Password: :p7Fk7.dvPX3gmj
+Password: Admin123@@
+
 Cliente
-Correo: Cliente@gmail.com
-password: 8UT_m57zjC9DhU!
+Correo: Cliente123@gmail.com
+password: Cliente123@@
