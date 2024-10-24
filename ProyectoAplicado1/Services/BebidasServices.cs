@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProyectoAplicado.DAL;
 using ProyectoAplicado.Models;
+using ProyectoAplicado1.Data;
 using System.Linq.Expressions;
 
 namespace ProyectoAplicado.Services
 {
     public class BebidasServices
     {
-        private readonly Contexto _contexto;
+        private readonly ApplicationDbContext _contexto;
 
-        public BebidasServices(Contexto contexto)
+        public BebidasServices(ApplicationDbContext contexto)
         {
             _contexto = contexto;
         }

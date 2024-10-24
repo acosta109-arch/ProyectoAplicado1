@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProyectoAplicado.DAL;
 using ProyectoAplicado.Models;
+using ProyectoAplicado1.Data;
 using System.Linq.Expressions;
 
 namespace ProyectoAplicado.Services;
 
 public class MeserosServices
 {
-    private readonly Contexto _contexto;
+    private readonly ApplicationDbContext _contexto;
 
-    public MeserosServices(Contexto contexto)
+    public MeserosServices(ApplicationDbContext contexto)
     {
         _contexto = contexto; 
     }

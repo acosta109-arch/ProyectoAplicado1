@@ -11,7 +11,7 @@ using ProyectoAplicado1.Data;
 namespace ProyectoAplicado1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241024172559_Inicial")]
+    [Migration("20241024194748_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -146,6 +146,162 @@ namespace ProyectoAplicado1.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("ProyectoAplicado.Models.Bebidas", b =>
+                {
+                    b.Property<int>("BebidaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Disponibilidad")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FotoURL")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("BebidaId");
+
+                    b.ToTable("Bebidas");
+                });
+
+            modelBuilder.Entity("ProyectoAplicado.Models.Cocineros", b =>
+                {
+                    b.Property<int>("CocineroId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Especialidad")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NombreCompleto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CocineroId");
+
+                    b.ToTable("Cocineros");
+                });
+
+            modelBuilder.Entity("ProyectoAplicado.Models.Comidas", b =>
+                {
+                    b.Property<int>("ComidaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Categoria")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Disponibilidad")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FotoURL")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ComidaId");
+
+                    b.ToTable("Comidas");
+                });
+
+            modelBuilder.Entity("ProyectoAplicado.Models.Meseros", b =>
+                {
+                    b.Property<int>("MeseroId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Especialidad")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NombreCompleto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("MeseroId");
+
+                    b.ToTable("Meseros");
+                });
+
+            modelBuilder.Entity("ProyectoAplicado.Models.Postres", b =>
+                {
+                    b.Property<int>("PostreId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Categoria")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Disponibilidad")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FotoURL")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PostreId");
+
+                    b.ToTable("Postres");
                 });
 
             modelBuilder.Entity("ProyectoAplicado1.Data.ApplicationUser", b =>

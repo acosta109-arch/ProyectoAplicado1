@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProyectoAplicado.DAL;
 using ProyectoAplicado.Models;
+using ProyectoAplicado1.Data;
 using System.Linq.Expressions;
 
 namespace ProyectoAplicado.Services
 {
     public class CocineroServices
     {
-        private readonly Contexto _contexto;
+        private readonly ApplicationDbContext _contexto;
 
-        public CocineroServices(Contexto contexto)
+        public CocineroServices(ApplicationDbContext contexto)
         {
             _contexto = contexto ?? throw new ArgumentNullException(nameof(contexto));
         }

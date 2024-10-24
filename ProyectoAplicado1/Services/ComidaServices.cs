@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProyectoAplicado.DAL;
 using ProyectoAplicado.Models;
+using ProyectoAplicado1.Data;
 using System.Linq.Expressions;
 
 namespace ProyectoAplicado.Services;
 
 public class ComidaServices
 {
-    private readonly Contexto _contexto;
-    public ComidaServices(Contexto contexto)
+    private readonly ApplicationDbContext _contexto;
+    public ComidaServices(ApplicationDbContext contexto)
     {
         _contexto = contexto;
     }

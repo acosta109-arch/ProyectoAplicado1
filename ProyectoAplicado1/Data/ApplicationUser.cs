@@ -6,5 +6,5 @@ namespace ProyectoAplicado1.Data
     public class ApplicationUser : IdentityUser
     {
     }
-
+     
 }

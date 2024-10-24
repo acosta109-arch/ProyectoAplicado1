@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-using ProyectoAplicado.DAL;
 using ProyectoAplicado.Models;
+using ProyectoAplicado1.Data;
 using System.Linq.Expressions;
 
 namespace ProyectoAplicado.Services;
 
 public class PostresServices
 {
-    private readonly Contexto _contexto;
-    public PostresServices(Contexto contexto)
+    private readonly ApplicationDbContext _contexto;
+    public PostresServices(ApplicationDbContext contexto)
     {
         _contexto = contexto;
     }
