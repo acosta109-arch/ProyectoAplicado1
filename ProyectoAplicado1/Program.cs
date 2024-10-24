@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ProyectoAplicado.Services;
 using ProyectoAplicado1.Components;
 using ProyectoAplicado1.Components.Account;
 using ProyectoAplicado1.Data;
@@ -27,15 +28,30 @@ namespace ProyectoAplicado1
                 options.DefaultScheme = IdentityConstants.ApplicationScheme;
                 options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
             })
-                .AddIdentityCookies();
+            .AddIdentityCookies();
 
             // Conectar a SQLite
             var connectionString = builder.Configuration.GetConnectionString("ConStr")
-                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                ?? throw new InvalidOperationException("Connection string 'ConStr' not found.");
 
             // Registrar DbContext con SQLite
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(connectionString));  // Usar SQLite
+
+            //La Inyeccion del services CocineroServices
+            builder.Services.AddScoped<CocineroServices>();
+
+            //La Inyeccion del services ComidaServices
+            builder.Services.AddScoped<ComidaServices>();
+
+            //La Inyeccion del services BebidasServices
+            builder.Services.AddScoped<BebidasServices>();
+
+            //La Inyeccion del services PostresServices
+            builder.Services.AddScoped<PostresServices>();
+
+            //La Inyeccion del services MeserosServices
+            builder.Services.AddScoped<MeserosServices>();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

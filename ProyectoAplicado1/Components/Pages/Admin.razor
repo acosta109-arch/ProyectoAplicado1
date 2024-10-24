@@ -1,7 +1,10 @@
 ﻿@page "/Index/Admin"
+@attribute [Authorize(Roles = "Admin")]
 
 <h3>Hola Admin.....</h3>
 
-@code {
+<button class="btn btn-success">Funcion</button>
 
+@code {
+    // Código adicional si lo necesitas
 }

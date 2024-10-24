@@ -1,0 +1,138 @@
+﻿@page "/Index/ListaCocineros"
+@inject CocineroServices CocineroServices
+@using ProyectoAplicado.Models
+
+<PageTitle>Lista de Cocineros</PageTitle>
+
+<style>
+    body {
+        background-color: #CBF3F0; 
+    }
+
+    h1 {
+        color: #FF9F1C; 
+        font-weight: bold;
+        font-size: 2.5rem;
+    }
+
+    .table-container {
+        margin: auto;
+        max-width: 800px;
+        background-color: #FFFFFF; 
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .table {
+        color: #333;
+        border: 1px solid #FF9F1C;
+    }
+
+    .thead-dark {
+        background-color: #FFBF69; 
+        color: #FFFFFF;
+    }
+
+    .table-bordered th,
+    .table-bordered td {
+        border: 1px solid #FF9F1C; 
+    }
+
+    .btn-danger {
+        background-color: #FF9F1C;
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 50px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-danger:hover {
+            background-color: #FFBF69;
+        }
+
+    .btn-back {
+        background-color: #2EC4B6; 
+        color: white;
+        margin-top: 15px;
+        border-radius: 50px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+        .btn-back:hover {
+            background-color: #FF9F1C; 
+        }
+
+    .fa-arrow-left {
+        margin-right: 5px;
+    }
+
+    p {
+        color: #666;
+        font-size: 1.25rem;
+    }
+</style>
+
+<div class="container mt-5">
+    <h1 class="text-center">Lista de Cocineros</h1>
+
+    <div class="table-container">
+        @if (cocineros != null && cocineros.Count > 0)
+        {
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Nombre Completo</th>
+                        <th>Especialidad</th>
+                        <th>Teléfono</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cocinero in cocineros)
+                    {
+                        <tr>
+                            <td>@cocinero.NombreCompleto</td>
+                            <td>@cocinero.Especialidad</td>
+                            <td>@cocinero.Telefono</td>
+                            <td>@cocinero.Estado</td>
+                            <td>
+                                <button class="btn btn-danger" @onclick="() => EliminarCocinero(cocinero.CocineroId)">Eliminar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No hay cocineros registrados.</p>
+        }
+
+        <NavLink class="btn btn-back" href="/Index/GestionarCocineros">
+            <i class="fa-solid fa-arrow-left"></i> Volver
+        </NavLink>
+    </div>
+</div>
+
+@code {
+    private List<Cocineros> cocineros;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cocineros = await CocineroServices.Listar(c => true); 
+    }
+
+    private async Task EliminarCocinero(int id)
+    {
+        var resultado = await CocineroServices.Eliminar(id);
+        if (resultado)
+        {
+            cocineros = await CocineroServices.Listar(c => true); 
+        }
+    }
+}

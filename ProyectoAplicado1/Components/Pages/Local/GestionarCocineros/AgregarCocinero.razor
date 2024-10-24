@@ -1,0 +1,158 @@
+﻿@page "/Index/AgregarCocinero"
+@inject CocineroServices CocineroServices
+@using ProyectoAplicado.Models
+
+<PageTitle>Agregar Cocinero</PageTitle>
+     
+<style>
+    body {
+        background-color: #CBF3F0; 
+    }
+
+    .form-container {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #FFBF69; 
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        background-color: #FFFFFF; 
+    }
+
+    h1 {
+        color: #FF9F1C; 
+        font-size: 2rem;
+    }
+
+    label {
+        color: #2EC4B6; 
+        font-weight: bold;
+    }
+
+    input[type="text"], input[type="tel"], select {
+        border: 1px solid #FFBF69; 
+        border-radius: 5px;
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 15px;
+        font-size: 1rem;
+    }
+
+        input[type="text"]:focus, input[type="tel"]:focus, select:focus {
+            border-color: #FF9F1C; 
+        }
+
+    .btn-register {
+        background-color: #FF9F1C; 
+        color: #FFFFFF;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+    }
+
+        .btn-register:hover {
+            background-color: #FFBF69; 
+        }
+
+    .btn-back {
+        background-color: #2EC4B6; 
+        color: #FFFFFF;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 16px;
+        margin-top: 20px;
+        display: inline-block;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-back:hover {
+            background-color: #FFBF69; 
+        }
+
+    .fa-arrow-left {
+        margin-right: 5px; 
+    }
+
+    .alert {
+        background-color: #2EC4B6; 
+        color: #FFFFFF;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
+
+<div class="container mt-5">
+    <h1 class="text-center">Registrar Nuevo Cocinero</h1>
+
+    <div class="form-container">
+        <EditForm Model="cocinero" OnValidSubmit="GuardarCocinero">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="nombreCompleto">Nombre Completo</label>
+                <InputText id="nombreCompleto" @bind-Value="cocinero.NombreCompleto" class="form-control" />
+                <ValidationMessage For="@(() => cocinero.NombreCompleto)" />
+            </div>
+
+            <div class="form-group">
+                <label for="especialidad">Especialidad</label>
+                <InputText id="especialidad" @bind-Value="cocinero.Especialidad" class="form-control" />
+                <ValidationMessage For="@(() => cocinero.Especialidad)" />
+            </div>
+
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <InputText id="telefono" @bind-Value="cocinero.Telefono" class="form-control" />
+                <ValidationMessage For="@(() => cocinero.Telefono)" />
+            </div>
+
+            <div class="form-group">
+                <label for="estado">Estado</label>
+                <InputSelect id="estado" @bind-Value="cocinero.Estado" class="form-control">
+                    <option value="">Seleccione un estado</option>
+                    <option value="Disponible">Disponible</option>
+                    <option value="Ocupado">Ocupado</option>
+                    <option value="Inactivo">Inactivo</option>
+                </InputSelect>
+                <ValidationMessage For="@(() => cocinero.Estado)" />
+            </div>
+
+            <button type="submit" class="btn btn-register">Registrar Cocinero</button>
+        </EditForm>
+
+        @if (mensaje != null)
+        {
+            <div class="alert mt-3">@mensaje</div>
+        }
+
+        <NavLink class="btn btn-back" href="/Index/GestionarCocineros">
+            <i class="fa-solid fa-arrow-left"></i> Volver
+        </NavLink>
+    </div>
+</div>
+
+@code {
+    private Cocineros cocinero = new Cocineros();
+    private string? mensaje;
+
+    private async Task GuardarCocinero()
+    {
+        if (!string.IsNullOrEmpty(cocinero.Estado))
+        {
+            var resultado = await CocineroServices.Insertar(cocinero);
+            mensaje = resultado ? "Cocinero registrado exitosamente." : "Error al registrar el cocinero.";
+            cocinero = new Cocineros(); 
+        }
+        else
+        {
+            mensaje = "Por favor, seleccione un estado para el cocinero.";
+        }
+    }
+}
