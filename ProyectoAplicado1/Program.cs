@@ -30,7 +30,7 @@ namespace ProyectoAplicado1
                 .AddIdentityCookies();
 
             // Conectar a SQLite
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+            var connectionString = builder.Configuration.GetConnectionString("ConStr")
                 ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             // Registrar DbContext con SQLite
