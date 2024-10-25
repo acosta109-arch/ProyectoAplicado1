@@ -77,7 +77,8 @@ namespace ProyectoAplicado1.Migrations
                     NombreCompleto = table.Column<string>(type: "TEXT", nullable: false),
                     Especialidad = table.Column<string>(type: "TEXT", nullable: false),
                     Telefono = table.Column<string>(type: "TEXT", nullable: false),
-                    Estado = table.Column<string>(type: "TEXT", nullable: false)
+                    Estado = table.Column<string>(type: "TEXT", nullable: false),
+                    FotoURL = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -111,7 +112,8 @@ namespace ProyectoAplicado1.Migrations
                     NombreCompleto = table.Column<string>(type: "TEXT", nullable: false),
                     Especialidad = table.Column<string>(type: "TEXT", nullable: false),
                     Telefono = table.Column<string>(type: "TEXT", nullable: false),
-                    Estado = table.Column<string>(type: "TEXT", nullable: false)
+                    Estado = table.Column<string>(type: "TEXT", nullable: false),
+                    FotoURL = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

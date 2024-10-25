@@ -1,5 +1,4 @@
 ﻿@page "/Index/Bebidas"
-
 @rendermode InteractiveServer
 @inject BebidasServices bebidasServices
 @inject NavigationManager navigation
@@ -8,7 +7,7 @@
 <style>
     .titulo {
         font-size: 2.5rem;
-        color: #2a9d8f;
+        color: #2EC4B6; /* Match the custom color used in Comidas */
         font-weight: bold;
         text-transform: uppercase;
     }
@@ -23,8 +22,8 @@
     .search-box {
         width: 60%;
         padding: 10px;
-        border-radius: 8px;
-        border: 2px solid #2a9d8f;
+        border-radius: 50px; /* Fully rounded */
+        border: 2px solid #2EC4B6;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         font-size: 1.1rem;
     }
@@ -32,8 +31,8 @@
     .tipo-selector {
         width: 35%;
         padding: 10px;
-        border-radius: 8px;
-        border: 2px solid #2a9d8f;
+        border-radius: 50px; /* Fully rounded */
+        border: 2px solid #2EC4B6;
         font-size: 1.1rem;
     }
 
@@ -44,11 +43,10 @@
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-between; 
+        justify-content: space-between;
         align-items: center;
-        padding-bottom: 15px; 
+        padding-bottom: 15px;
     }
-
 
         .product-card:hover {
             transform: translateY(-5px);
@@ -62,14 +60,13 @@
         width: 100%;
     }
 
-
     .card-body {
-        flex-grow: 1; 
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
-        justify-content: space-between; 
-        align-items: center; 
-        text-align: center; 
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
         padding: 10px;
         width: 100%;
     }
@@ -80,37 +77,10 @@
         color: #264653;
     }
 
-
     .price {
         color: #e76f51;
         font-size: 1.2rem;
         font-weight: bold;
-    }
-
-    .cart-icon {
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        background-color: #2a9d8f;
-        color: white;
-        padding: 10px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 1.2rem;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-        .cart-icon:hover {
-            background-color: #21867a;
-        }
-
-    .card-text {
-        display: -webkit-box;
-        -webkit-line-clamp: 3; 
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin-bottom: 15px; 
     }
 
     .card-footer a {
@@ -127,22 +97,58 @@
         }
 
     .icon-label {
-        font-size: 0.7rem; 
+        font-size: 0.7rem;
         color: black;
         margin-top: 3px;
     }
 
+    .btn-custom {
+        background-color: #2EC4B6; /* Custom color */
+        color: #fff; /* Text color */
+        border: none; /* No border */
+        padding: 10px 20px;
+        border-radius: 50px; /* Rounded shape */
+        font-size: 0.9rem;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
 
+        .btn-custom:hover {
+            background-color: #29b0a8; /* Slightly darker shade for hover effect */
+        }
 
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 10; /* Ensure the button is above other elements */
+    }
+
+    .btn-success {
+        background-color: #FF9F1C; /* New color */
+        border: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-success:hover {
+            background-color: #e08b19; /* Slightly darker shade for hover effect */
+        }
 </style>
-<div class="container mt-4">
-    <h1 class="text-center mb-5 titulo"><i class="fa-solid fa-champagne-glasses"></i>  Área de bebidas  <i class="fa-solid fa-champagne-glasses"></i></h1>
+<div class="container mt-5 pt-5">
+    <a href="/Index/GestionarMenu" class="btn btn-success back-button mt-5">
+        <i class="fa-solid fa-backward"></i>
+    </a>
+    <h1 class="text-center mb-5" style="font-family: 'Poppins', sans-serif; color: #2EC4B6;"><i class="fa-solid fa-champagne-glasses"></i> Área de bebidas <i class="fa-solid fa-champagne-glasses"></i></h1>
     <div class="text-left mb-4">
-        <a href="/Create/Bebidas" class="btn btn-success"><i class="fa-solid fa-square-plus"></i> Añadir bebida</a>
+        <a href="/Create/Bebidas" class="btn btn-custom"><i class="fa-solid fa-square-plus"></i> Añadir bebida</a>
     </div>
     <div class="filter-container mb-4">
         <input type="text" class="form-control search-box" placeholder="Buscar por nombre..." @oninput="AplicarFiltro" @bind="busquedaNombre" />
-        
+
         <select class="form-select tipo-selector" @onchange="FiltrarPorTipo">
             <option value="">Todos</option>
             <option value="Alcoholica">Alcohólica</option>
@@ -150,10 +156,9 @@
             <option value="Gaseosa">Gaseosa</option>
             <option value="Agua">Agua</option>
         </select>
-
     </div>
 
-    <div class="row" id="product-list">
+    <div class="row" id="product-list" style="font-family: 'Poppins', sans-serif;">
         @foreach (var bebida in bebidasFiltradas)
         {
             <div class="col-md-3 mb-4">
@@ -187,24 +192,17 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         }
     </div>
 </div>
 
-
-
-
 @code {
     public List<Bebidas> bebidas = new List<Bebidas>();
-    private string filtro = "";
-    private string valorFiltro = "";
-    private List<Bebidas> bebidasFiltradas = new();
     private string tipoSeleccionado = "";
     private string busquedaNombre = "";
+    private List<Bebidas> bebidasFiltradas = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -212,11 +210,10 @@
         AplicarFiltro();
     }
 
-
     private void FiltrarPorTipo(ChangeEventArgs e)
     {
         tipoSeleccionado = e.Value?.ToString() ?? "";
-        AplicarFiltro(); 
+        AplicarFiltro();
     }
 
     private void AplicarFiltro()

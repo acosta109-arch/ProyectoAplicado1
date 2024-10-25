@@ -1,9 +1,9 @@
-﻿@page "/Index/Comidas"
+﻿@page "/Index/Postres"
 @rendermode InteractiveServer
-@inject ComidaServices comidasService
+@inject PostresServices postresService
 @inject NavigationManager navigation
 
-<PageTitle>Inicio comida</PageTitle>
+<PageTitle>Inicio postres</PageTitle>
 <style>
     .titulo {
         font-size: 2.5rem;
@@ -182,47 +182,48 @@
     <a href="/Index/GestionarMenu" class="btn btn-success back-button mt-5">
         <i class="fa-solid fa-backward"></i>
     </a>
-    <h1 class="text-center mb-5" style="font-family: 'Poppins', sans-serif; color: #2EC4B6;"><i class="fa-solid fa-utensils"></i> Área de comida  <i class="fa-solid fa-utensils"></i></h1>
+    <h1 class="text-center mb-5" style="font-family: 'Poppins', sans-serif; color: #2EC4B6;"><i class="fa-solid fa-utensils"></i> Área de postres  <i class="fa-solid fa-utensils"></i></h1>
     <div class="text-left mb-4">
-        <a href="/Create/Comidas" class="btn btn-custom" style="font-family: 'Poppins', sans-serif;"><i class="fa-solid fa-square-plus"></i> Añadir comida</a>
+        <a href="/Create/Postres" class="btn btn-custom" style="font-family: 'Poppins', sans-serif;"><i class="fa-solid fa-square-plus"></i> Añadir postre</a>
     </div>
     <div class="filter-container mb-4">
         <input type="text" class="form-control search-box rounded-input" placeholder="Buscar por nombre..." @oninput="AplicarFiltro" @bind="busquedaNombre" />
 
         <select class="form-select tipo-selector rounded-input" @onchange="FiltrarPorTipo">
             <option value="">Todos</option>
-            <option value="Entradas">Entradas</option>
-            <option value="Platos fuertes">Platos fuertes</option>
+            <option value="Helados">Helados</option>
+            <option value="Flanes">Flanes</option>
+            <option value="Dulces">Dulces</option>
         </select>
     </div>
     <div class="row" id="product-list" style="font-family: 'Poppins', sans-serif;">
-        @foreach (var bebida in comidasFiltradas)
+        @foreach (var postre in postresFiltrados)
         {
             <div class="col-md-3 mb-4">
                 <div class="card product-card h-100">
-                    <img src="@bebida.FotoURL" class="card-img-top product-img" alt="@bebida.Nombre">
+                    <img src="@postre.FotoURL" class="card-img-top product-img" alt="@postre.Nombre">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">@bebida.Nombre</h5>
-                        <p class="card-text">@bebida.Descripcion</p>
-                        <p class="price"><strong>RD$ @bebida.Precio</strong></p>
+                        <h5 class="card-title">@postre.Nombre</h5>
+                        <p class="card-text">@postre.Descripcion</p>
+                        <p class="price"><strong>RD$ @postre.Precio</strong></p>
                     </div>
 
                     <div class="card-footer text-center">
                         <div class="d-flex justify-content-center">
                             <div class="text-center mx-4">
-                                <a href="/Bebidas/Details/@bebida.ComidaId" class="btn btn-warning text-white rounded-circle" title="Ver detalles">
+                                <a href="/Bebidas/Details/@postre.PostreId" class="btn btn-warning text-white rounded-circle" title="Ver detalles">
                                     <i class="fa-solid fa-circle-info"></i>
                                 </a>
                                 <span class="icon-label">Info</span>
                             </div>
                             <div class="text-center mx-4">
-                                <a href="/Bebidas/Edit/@bebida.ComidaId" class="btn btn-primary rounded-circle text-white" title="Modificar">
+                                <a href="/Bebidas/Edit/@postre.PostreId" class="btn btn-primary rounded-circle text-white" title="Modificar">
                                     <i class="fa-solid fa-sliders"></i>
                                 </a>
                                 <span class="icon-label">Editar</span>
                             </div>
                             <div class="text-center mx-4">
-                                <a href="/Bebidas/Delete/@bebida.ComidaId" class="btn btn-danger rounded-circle text-white" title="Eliminar">
+                                <a href="/Bebidas/Delete/@postre.PostreId" class="btn btn-danger rounded-circle text-white" title="Eliminar">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </a>
                                 <span class="icon-label">Eliminar</span>
@@ -241,16 +242,16 @@
 
 
 @code {
-    public List<Comidas> comidas = new List<Comidas>();
+    public List<Postres> postres = new List<Postres>();
     private string filtro = "";
     private string valorFiltro = "";
-    private List<Comidas> comidasFiltradas = new();
+    private List<Postres> postresFiltrados = new();
     private string tipoSeleccionado = "";
     private string busquedaNombre = "";
 
     protected override async Task OnInitializedAsync()
     {
-        comidas = await comidasService.Listar(c => true);
+        postres = await postresService.Listar(c => true);
         AplicarFiltro();
     }
 
@@ -263,7 +264,7 @@
 
     private void AplicarFiltro()
     {
-        comidasFiltradas = comidas
+        postresFiltrados = postres
             .Where(b => (string.IsNullOrEmpty(tipoSeleccionado) || b.Descripcion.Contains(tipoSeleccionado, StringComparison.OrdinalIgnoreCase))
                      && (string.IsNullOrEmpty(busquedaNombre) || b.Nombre.Contains(busquedaNombre, StringComparison.OrdinalIgnoreCase)))
             .ToList();

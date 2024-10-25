@@ -4,65 +4,116 @@
 @inject BebidasServices bebidasServices
 @inject NavigationManager navigation
 
-
 <PageTitle>Añadir nueva bebida</PageTitle>
 <EditForm Model="bebidas" OnValidSubmit="Crear">
     <DataAnnotationsValidator />
-    <div class="container">
+    <div class="container mt-5 pt-5">
         <div class="card shadow-lg">
             @*Header*@
-            <div class="card-header bg-success text-white">
-                <h2><strong>Añadir nueva bebida</strong></h2>
+            <div class="card-header" style="background-color: #FF9F1C; color: white;">
+                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Añadir nueva bebida</strong></h2>
             </div>
             @*Body*@
             <div class="card-body">
-                <label class="form-label" for="descripcion"><strong>Nombre de la bebida</strong></label>
-                <InputText id="nombres" class="form-control" @bind-Value="bebidas.Nombre"></InputText>
-                <ValidationMessage For="@(() => bebidas.Nombre)"></ValidationMessage>
+                <div class="mb-3">
+                    <label class="form-label" for="nombres" style="font-family: 'Poppins', sans-serif;"><strong>Nombre de la bebida</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </span>
+                        <InputText id="nombres" class="form-control" @bind-Value="bebidas.Nombre" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => bebidas.Nombre)"></ValidationMessage>
+                </div>
 
-                <label class="form-label" for="descripcion"><strong>Descripci&oacute;n de la bebida</strong></label>
-                <InputText id="nombres" class="form-control" @bind-Value="bebidas.Descripcion"></InputText>
-                <ValidationMessage For="@(() => bebidas.Descripcion)"></ValidationMessage>
+                <div class="mb-3">
+                    <label class="form-label" for="descripcion" style="font-family: 'Poppins', sans-serif;"><strong>Descripción de la bebida</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </span>
+                        <InputText id="descripcion" class="form-control" @bind-Value="bebidas.Descripcion" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => bebidas.Descripcion)"></ValidationMessage>
+                </div>
 
-                <label class="form-label" for="tipoBebida"><strong>Tipo de bebida</strong></label>
-                <InputSelect id="tipoBebida" class="form-control" @bind-Value="bebidas.Tipo">
-                    <option value="">Seleccione un tipo</option>
-                    <option value="Alcoholica">Alcoholica</option>
-                    <option value="Jugos">Jugos</option>
-                    <option value="Gaseosa">Gaseosa</option>
-                    <option value="Agua">Agua</option>
-                </InputSelect>
-                <ValidationMessage For="@(() => bebidas.Tipo)"></ValidationMessage>
+                <div class="mb-3">
+                    <label class="form-label" for="tipoBebida" style="font-family: 'Poppins', sans-serif;"><strong>Tipo de bebida</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </span>
+                        <InputSelect id="tipoBebida" class="form-control" @bind-Value="bebidas.Tipo" style="border: 1px solid gray;">
+                            <option value="">Seleccione un tipo</option>
+                            <option value="Alcoholica">Alcoholica</option>
+                            <option value="Jugos">Jugos</option>
+                            <option value="Gaseosa">Gaseosa</option>
+                            <option value="Agua">Agua</option>
+                        </InputSelect>
+                    </div>
+                    <ValidationMessage For="@(() => bebidas.Tipo)"></ValidationMessage>
+                </div>
 
-                <label class="form-label" for="descripcion"><strong>Precio de la bebida</strong></label>
-                <InputNumber id="nombres" class="form-control" @bind-Value="bebidas.Precio"></InputNumber>
-                <ValidationMessage For="@(() => bebidas.Precio)"></ValidationMessage>
+                <div class="mb-3">
+                    <label class="form-label" for="precio" style="font-family: 'Poppins', sans-serif;"><strong>Precio de la bebida</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fas fa-dollar-sign"></i>
+                        </span>
+                        <InputNumber id="precio" class="form-control" @bind-Value="bebidas.Precio" style="border: 1px solid gray;"></InputNumber>
+                    </div>
+                    <ValidationMessage For="@(() => bebidas.Precio)"></ValidationMessage>
+                </div>
 
-                <label class="form-label" for="disponibilidad"><strong>Disponibilidad</strong></label>
-                <InputSelect id="disponibilidad" class="form-control" @bind-Value="bebidas.Disponibilidad">
-                    <option value="">Seleccione una opción</option>
-                    <option value="Disponible">Disponible</option>
-                    <option value="No disponible">No disponible</option>
-                </InputSelect>
-                <ValidationMessage For="@(() => bebidas.Disponibilidad)"></ValidationMessage>
+                <div class="mb-3">
+                    <label class="form-label" for="disponibilidad" style="font-family: 'Poppins', sans-serif;"><strong>Disponibilidad</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fas fa-check-circle"></i>
+                        </span>
+                        <InputSelect id="disponibilidad" class="form-control" @bind-Value="bebidas.Disponibilidad" style="border: 1px solid gray;">
+                            <option value="">Seleccione una opción</option>
+                            <option value="Disponible">Disponible</option>
+                            <option value="No disponible">No disponible</option>
+                        </InputSelect>
+                    </div>
+                    <ValidationMessage For="@(() => bebidas.Disponibilidad)"></ValidationMessage>
+                </div>
 
-                <label class="form-label" for="descripcion"><strong>Url de la imagen de la bebida</strong></label>
-                <InputText id="nombres" class="form-control" @bind-Value="bebidas.FotoURL"></InputText>
-                <ValidationMessage For="@(() => bebidas.FotoURL)"></ValidationMessage>
+                <div class="mb-3">
+                    <label class="form-label" for="fotoURL" style="font-family: 'Poppins', sans-serif;"><strong>Url de la imagen de la bebida</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fas fa-image"></i>
+                        </span>
+                        <InputText id="fotoURL" class="form-control" @bind-Value="bebidas.FotoURL" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => bebidas.FotoURL)"></ValidationMessage>
+                </div>
             </div>
+
             @*Footer*@
             <div class="card-footer">
-                <button type="button" class="btn btn-secondary" @onclick="Volver"><i class="fa-solid fa-backward"></i> Volver</button>
-                <button type="submit" class="btn btn-success"><i class="fa-solid fa-share-from-square"></i>  Guardar</button>
+                <button type="button" class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                    <i class="fa-solid fa-backward"></i> Volver
+                </button>
+                <button type="submit" class="btn" style="background-color: #FF9F1C; color: white;">
+                    <i class="fa-solid fa-share-from-square"></i> Guardar
+                </button>
             </div>
         </div>
     </div>
 </EditForm>
 
+<style>
+    .gray-border {
+        border: 1px solid gray;
+    }
+</style>
+
 @code {
     public Bebidas bebidas { get; set; } = new Bebidas();
     public bool NombreRepetido { get; set; }
-
 
     public async Task<bool> Validar()
     {
@@ -85,4 +136,3 @@
         navigation.NavigateTo("/Index/Bebidas");
     }
 }
-

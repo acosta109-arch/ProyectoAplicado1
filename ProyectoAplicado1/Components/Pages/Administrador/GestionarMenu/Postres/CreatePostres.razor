@@ -1,91 +1,92 @@
-﻿@page "/Create/Comidas"
+﻿@page "/Create/Postres"
 @rendermode InteractiveServer
-@inject ComidaServices comidasServices
+@inject PostresServices postresServices
 @inject NavigationManager navigation
 
-<PageTitle>Añadir nueva comida</PageTitle>
-<EditForm Model="comidas" OnValidSubmit="Crear">
+<PageTitle>Añadir nuevo postre</PageTitle>
+<EditForm Model="postres" OnValidSubmit="Crear">
     <DataAnnotationsValidator />
     <div class="container mt-5 pt-5">
         <div class="card shadow-lg">
             @*Header*@
             <div class="card-header" style="background-color: #FF9F1C; color: white;">
-                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Añadir nueva comida</strong></h2>
+                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Añadir nuevo postre</strong></h2>
             </div>
             @*Body*@
             <div class="card-body">
                 <div class="mb-3">
-                    <label class="form-label" for="nombres" style="font-family: 'Poppins', sans-serif;"><strong>Nombre de la comida</strong></label>
+                    <label class="form-label" for="nombre" style="font-family: 'Poppins', sans-serif;"><strong>Nombre del postre</strong></label>
                     <div class="input-group">
                         <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
                             <i class="fa-solid fa-file-signature"></i>
                         </span>
-                        <InputText id="nombres" class="form-control" @bind-Value="comidas.Nombre" style="border: 1px solid gray;"></InputText>
+                        <InputText id="nombre" class="form-control" @bind-Value="postres.Nombre" style="border: 1px solid gray;"></InputText>
                     </div>
-                    <ValidationMessage For="@(() => comidas.Nombre)"></ValidationMessage>
+                    <ValidationMessage For="@(() => postres.Nombre)"></ValidationMessage>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label" for="descripcion" style="font-family: 'Poppins', sans-serif;"><strong>Descripción de la comida</strong></label>
+                    <label class="form-label" for="descripcion" style="font-family: 'Poppins', sans-serif;"><strong>Descripción del postre</strong></label>
                     <div class="input-group">
                         <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
                             <i class="fa-solid fa-circle-info"></i>
                         </span>
-                        <InputText id="descripcion" class="form-control" @bind-Value="comidas.Descripcion" style="border: 1px solid gray;"></InputText>
+                        <InputText id="descripcion" class="form-control" @bind-Value="postres.Descripcion" style="border: 1px solid gray;"></InputText>
                     </div>
-                    <ValidationMessage For="@(() => comidas.Descripcion)"></ValidationMessage>
+                    <ValidationMessage For="@(() => postres.Descripcion)"></ValidationMessage>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label" for="tipoBebida" style="font-family: 'Poppins', sans-serif;"><strong>Categoria de la comida</strong></label>
+                    <label class="form-label" for="categoria" style="font-family: 'Poppins', sans-serif;"><strong>Categoría del postre</strong></label>
                     <div class="input-group">
                         <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
                             <i class="fa-solid fa-layer-group"></i>
                         </span>
-                        <InputSelect id="tipoBebida" class="form-control" @bind-Value="comidas.Categoria" style="border: 1px solid gray;">
+                        <InputSelect id="categoria" class="form-control" @bind-Value="postres.Categoria" style="border: 1px solid gray;">
                             <option value="">Seleccione un tipo</option>
-                            <option value="Entradas">Entradas</option>
-                            <option value="Platos fuertes">Platos fuertes</option>
+                            <option value="Helados">Helados</option>
+                            <option value="Flanes">Flanes</option>
+                            <option value="Dulces">Dulces</option>
                         </InputSelect>
                     </div>
-                    <ValidationMessage For="@(() => comidas.Categoria)"></ValidationMessage>
+                    <ValidationMessage For="@(() => postres.Categoria)"></ValidationMessage>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label" for="precio" style="font-family: 'Poppins', sans-serif;"><strong>Precio de la comida</strong></label>
+                    <label class="form-label" for="precio" style="font-family: 'Poppins', sans-serif;"><strong>Precio del postre</strong></label>
                     <div class="input-group">
                         <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
-                            <i class="fas fa-dollar-sign"></i> <!-- Use your preferred icon -->
+                            <i class="fas fa-dollar-sign"></i>
                         </span>
-                        <InputNumber id="precio" class="form-control" @bind-Value="comidas.Precio" style="border: 1px solid gray;"></InputNumber>
+                        <InputNumber id="precio" class="form-control" @bind-Value="postres.Precio" style="border: 1px solid gray;"></InputNumber>
                     </div>
-                    <ValidationMessage For="@(() => comidas.Precio)"></ValidationMessage>
+                    <ValidationMessage For="@(() => postres.Precio)"></ValidationMessage>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label" for="disponibilidad" style="font-family: 'Poppins', sans-serif;"><strong>Disponibilidad</strong></label>
                     <div class="input-group">
                         <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
-                            <i class="fas fa-check-circle"></i> <!-- Use your preferred icon -->
+                            <i class="fas fa-check-circle"></i>
                         </span>
-                        <InputSelect id="disponibilidad" class="form-control" @bind-Value="comidas.Disponibilidad" style="border: 1px solid gray;">
+                        <InputSelect id="disponibilidad" class="form-control" @bind-Value="postres.Disponibilidad" style="border: 1px solid gray;">
                             <option value="">Seleccione una opción</option>
                             <option value="Disponible">Disponible</option>
                             <option value="No disponible">No disponible</option>
                         </InputSelect>
                     </div>
-                    <ValidationMessage For="@(() => comidas.Disponibilidad)"></ValidationMessage>
+                    <ValidationMessage For="@(() => postres.Disponibilidad)"></ValidationMessage>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label" for="fotoURL" style="font-family: 'Poppins', sans-serif;"><strong>Url de la imagen de la comida</strong></label>
+                    <label class="form-label" for="fotoURL" style="font-family: 'Poppins', sans-serif;"><strong>URL de la imagen del postre</strong></label>
                     <div class="input-group">
                         <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
-                            <i class="fas fa-image"></i> <!-- Use your preferred icon -->
+                            <i class="fas fa-image"></i>
                         </span>
-                        <InputText id="fotoURL" class="form-control" @bind-Value="comidas.FotoURL" style="border: 1px solid gray;"></InputText>
+                        <InputText id="fotoURL" class="form-control" @bind-Value="postres.FotoURL" style="border: 1px solid gray;"></InputText>
                     </div>
-                    <ValidationMessage For="@(() => comidas.FotoURL)"></ValidationMessage>
+                    <ValidationMessage For="@(() => postres.FotoURL)"></ValidationMessage>
                 </div>
             </div>
 
@@ -104,32 +105,31 @@
         .gray-border {
             border: 1px solid gray;
         }
-
     </style>
 </EditForm>
 
 @code {
-    public Comidas comidas { get; set; } = new Comidas();
+    public Postres postres { get; set; } = new Postres();
     public bool NombreRepetido { get; set; }
 
     public async Task<bool> Validar()
     {
-        var existeBebida = await comidasServices.ValidarComidaUnica(comidas.ComidaId, comidas.Nombre, comidas.Descripcion);
-        return existeBebida == null;
+        var existePostre = await postresServices.ValidarPostreUnico(postres.PostreId, postres.Nombre, postres.Descripcion);
+        return existePostre == null;
     }
 
     public async Task Crear()
     {
         if (!await Validar())
         {
-            await comidasServices.Guardar(comidas);
-            comidas = new Comidas();
+            await postresServices.Guardar(postres);
+            postres = new Postres();
             Volver();
         }
     }
 
     public void Volver()
     {
-        navigation.NavigateTo("/Index/Comidas");
+        navigation.NavigateTo("/Index/Postres");
     }
 }

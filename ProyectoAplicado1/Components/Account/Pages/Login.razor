@@ -12,57 +12,81 @@
 
 <PageTitle>Log in</PageTitle>
 
-<h1>Log in</h1>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <StatusMessage Message="@errorMessage" />
-            <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
-                <DataAnnotationsValidator />
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <ValidationSummary class="text-danger" role="alert" />
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label for="email" class="form-label">Email</label>
-                    <ValidationMessage For="() => Input.Email" class="text-danger" />
+<h1 class="text-center">Log in</h1>
+<div class="d-flex justify-content-center align-items-center" style="height: 90vh; font-family: 'Poppins', sans-serif;">
+    <div class="col-md-6">
+        <div class="card shadow-lg" style="background-color: #2EC4B6;">
+            <div class="card-body p-5">
+                <h2 class="card-title text-center mb-4 text-white">Login</h2>
+                <StatusMessage Message="@errorMessage" />
+                <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="login">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary class="text-danger" role="alert" />
+
+                    <div class="form-floating mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                                <i class="bi bi-person"></i>
+                            </span>
+                            <InputText @bind-Value="Input.Email" class="form-control" style="border: 1px solid gray;" autocomplete="username" aria-required="true" placeholder="Correo electronico" />
+                        </div>
+                        <ValidationMessage For="() => Input.Email" class="text-danger" />
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                                <i class="bi bi-lock"></i>
+                            </span>
+                            <InputText type="password" @bind-Value="Input.Password" class="form-control" style="border: 1px solid gray;" autocomplete="current-password" aria-required="true" placeholder="Contraseña" />
+                        </div>
+                        <ValidationMessage For="() => Input.Password" class="text-danger" />
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <InputCheckbox @bind-Value="Input.RememberMe" class="form-check-input" />
+                        <label class="form-check-label text-white" for="rememberMe">Remember me</label>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn" style="background-color: #FF9F1C; color: white;"><i class="fa-solid fa-paper-plane"></i> Iniciar Sesion</button>
+                    </div>
+                </EditForm>
+
+                <div class="text-left mt-3">
+                    <a href="Account/ForgotPassword" class="text-dark">Forgot your password?</a><br />
+                    <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))" class="text-dark">Register as a new user</a><br />
+                    <a href="Account/ResendEmailConfirmation" class="text-dark">Resend email confirmation</a>
                 </div>
-                <div class="form-floating mb-3">
-                    <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label for="password" class="form-label">Password</label>
-                    <ValidationMessage For="() => Input.Password" class="text-danger" />
-                </div>
-                <div class="checkbox mb-3">
-                    <label class="form-label">
-                        <InputCheckbox @bind-Value="Input.RememberMe" class="darker-border-checkbox form-check-input" />
-                        Remember me
-                    </label>
-                </div>
-                <div>
-                    <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a href="Account/ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Register", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a href="Account/ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
-            </EditForm>
-        </section>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            <ExternalLoginPicker />
-        </section>
+            </div>
+        </div>
     </div>
 </div>
+
+
+<style>
+    .card {
+        border: none; /* Remove card borders */
+    }
+
+    .input-group-text {
+        border: 1px solid gray; /* Match the border style */
+        background-color: #FF9F1C; /* Icon background color */
+        color: white; /* Icon color */
+    }
+
+    .form-control {
+        border: 1px solid gray; /* Input border color */
+    }
+
+    .form-floating .form-control {
+        border-radius: 0.25rem; /* Rounded corners */
+    }
+
+    .form-label {
+        color: #555; /* Label color */
+    }
+</style>
 
 @code {
     private string? errorMessage;
@@ -93,14 +117,13 @@
             Logger.LogInformation("User logged in.");
 
             var user = await SignInManager.UserManager.FindByEmailAsync(Input.Email);
-            // Redirigir según el correo del usuario
+            // Redirect based on user's email
             if (Input.Email == "Admin@gmail.com")
             {
                 NavigationManager.NavigateTo("/Index/Admin");
             }
             else if (Input.Email == "Cliente123@gmail.com")
             {
-                // Redirigir a la página del cliente, puedes especificar la ruta deseada
                 NavigationManager.NavigateTo("/Index/Cliente");
             }
         }

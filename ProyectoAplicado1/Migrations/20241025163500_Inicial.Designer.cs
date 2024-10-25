@@ -11,7 +11,7 @@ using ProyectoAplicado1.Data;
 namespace ProyectoAplicado1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241024200459_Inicial")]
+    [Migration("20241025163500_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -196,6 +196,10 @@ namespace ProyectoAplicado1.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("FotoURL")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("NombreCompleto")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -254,6 +258,10 @@ namespace ProyectoAplicado1.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FotoURL")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

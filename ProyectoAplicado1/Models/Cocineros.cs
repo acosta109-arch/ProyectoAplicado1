@@ -22,4 +22,7 @@ public class Cocineros
     [Required(ErrorMessage = "El estado es obligatorio.")]
     [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "El estado solo puede contener letras.")]
     public string Estado { get; set; }
+
+    [Required(ErrorMessage = "La foto es obligatoria.")]
+    public string FotoURL { get; set; }
 }

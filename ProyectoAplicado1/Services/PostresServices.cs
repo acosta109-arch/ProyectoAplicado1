@@ -61,4 +61,14 @@ public class PostresServices
             .Where(criterio)
             .ToListAsync();
     }
+
+    public async Task<bool> ValidarPostreUnico(int postreId, string nombre, string descripcion)
+    {
+        var bebidaExistente = await _contexto.Postres
+            .Where(b => b.PostreId != postreId)
+            .Where(b => b.Nombre == nombre || b.Descripcion == descripcion)
+            .FirstOrDefaultAsync();
+
+        return bebidaExistente == null;
+    }
 }

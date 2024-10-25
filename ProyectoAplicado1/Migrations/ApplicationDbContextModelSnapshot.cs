@@ -193,6 +193,10 @@ namespace ProyectoAplicado1.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("FotoURL")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("NombreCompleto")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -251,6 +255,10 @@ namespace ProyectoAplicado1.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FotoURL")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
