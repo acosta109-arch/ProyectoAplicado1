@@ -8,11 +8,11 @@ namespace ProyectoAplicado1.Models
 
         [Required(ErrorMessage = "El número de tarjeta es obligatorio")]
         [RegularExpression(@"^[0-9]{16}$", ErrorMessage = "El número de tarjeta debe tener 16 dígitos")]
-        public int NumeroTarjeta { get; set; }
+        public string NumeroTarjeta { get; set; }
 
         [Required(ErrorMessage = "El CVV es obligatorio")]
         [RegularExpression(@"^[0-9]{3,4}$", ErrorMessage = "El CVV debe tener 3 o 4 dígitos")]
-        public int CVV { get; set; }
+        public string CVV { get; set; }
 
         //Tipo
 
