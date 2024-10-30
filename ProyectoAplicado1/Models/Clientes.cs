@@ -8,17 +8,25 @@ namespace ProyectoAplicado1.Models
 		[Key]
 		public int ClienteId { get; set; }
 
-		public string Clave { get; set; }
-
 		public string? Nombre { get; set; }
 
-		public string Apellido { get; set; }
+        [Required(ErrorMessage = "El nombre es obligatorio")]
+        [RegularExpression(@"^[a-zA-Z\s]*$", ErrorMessage = "El nombre solo puede contener letras y espacios")]
+        public string? Apellido { get; set; }
 
-		public string Telefono { get; set; }
+        [Required(ErrorMessage = "El Apellido es obligatorio")]
+        [RegularExpression(@"^[a-zA-Z\s]*$", ErrorMessage = "El nombre solo puede contener letras y espacios")]
+        public string? Telefono { get; set; }
 
-		public string Correo { get; set; }
+        [Required(ErrorMessage = "El Telefono es obligatorio")]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "El teléfono debe contener 10 dígitos")]
 
-		[ForeignKey("TarjetaId")]
+        public string? Correo { get; set; }
+
+        [Required(ErrorMessage = "El correo es obligatorio")]
+        [EmailAddress(ErrorMessage = "Por favor ingrese una dirección de correo válida")]
+
+        [ForeignKey("TarjetaId")]
 		public Tarjetas Tarjetas { get; set; }
 
 		[ForeignKey("DireccionId")]
