@@ -10,8 +10,13 @@ namespace ProyectoAplicado1.Models
 		[Key]
 		public int PedidoId { get; set; }
 
+		[ForeignKey("ComidaId")]
 		public List<Comidas> Comidas { get; set; }
+
+		[ForeignKey("BedidaId")]
 		public List<Bebidas> Bedidas { get; set; }
+
+		[ForeignKey("PostreId")]
 		public List<Postres> Postres { get; set; }
 		public MetodoPagos MetodoPagos { get; set; }
 
