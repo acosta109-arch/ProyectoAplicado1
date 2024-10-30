@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ProyectoAplicado1.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProyectoAplicado.Models;
 
@@ -25,4 +27,7 @@ public class Cocineros
 
     [Required(ErrorMessage = "La foto es obligatoria.")]
     public string FotoURL { get; set; }
+
+	[ForeignKey("PedidoId")]
+	public Pedidos Pedidos { get; set; }
 }
