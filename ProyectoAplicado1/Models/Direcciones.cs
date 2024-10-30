@@ -7,8 +7,9 @@ namespace ProyectoAplicado1.Models
 		[Key]
 		public int DireccionId { get; set; }
 
-		public string Descripcion { get; set; }
+		public string? Descripcion { get; set; }
+        [Required(ErrorMessage = "Se recomienda agregar una descripcion")]
 
-		public string? Notas { get; set; }
+        public string? Notas { get; set; }
 	}
 }
