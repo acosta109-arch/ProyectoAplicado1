@@ -8,9 +8,10 @@ namespace ProyectoAplicado1.Models
 		[Key]
 		public int MetodoPagoId { get; set; }
 
+		[Required(ErrorMessage = "Debe agregar el monto")]
+		[Range(0.01, float.MaxValue, ErrorMessage = "Debe ser mayor a 0.")]
 		public float Monto { get; set; }
-        [Required(ErrorMessage = "Debe agregar el monto")]
-        [RegularExpression(@"^[1-9]\d*\.?\d*$", ErrorMessage = "El monto debe ser mayor que 0")]
+       
 
         [ForeignKey("TarjetaId")]
 		public Tarjetas tarjetas { get; set; }
