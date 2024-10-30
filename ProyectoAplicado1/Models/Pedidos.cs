@@ -18,7 +18,9 @@ namespace ProyectoAplicado1.Models
 
 		[ForeignKey("PostreId")]
 		public List<Postres> Postres { get; set; }
-		public MetodoPagos MetodoPagos { get; set; }
+
+        [ForeignKey("MetodoPagoId")]
+        public MetodoPagos MetodoPagos { get; set; }
 
 		//Estado
 
