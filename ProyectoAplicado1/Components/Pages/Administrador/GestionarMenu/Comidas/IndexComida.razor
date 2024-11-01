@@ -197,6 +197,7 @@
     </div>
     <div class="row" id="product-list" style="font-family: 'Poppins', sans-serif;">
         @foreach (var bebida in comidasFiltradas)
+
         {
             <div class="col-md-3 mb-4">
                 <div class="card product-card h-100">
@@ -238,34 +239,73 @@
 </div>
 
 
-
-
 @code {
     public List<Comidas> comidas = new List<Comidas>();
+
     private string filtro = "";
+
     private string valorFiltro = "";
-    private List<Comidas> comidasFiltradas = new();
+
+    private List<Comidas> comidasFiltradas = new List<Comidas>();
+
     private string tipoSeleccionado = "";
+
     private string busquedaNombre = "";
 
+
+
     protected override async Task OnInitializedAsync()
+
     {
+
         comidas = await comidasService.Listar(c => true);
+
         AplicarFiltro();
+
     }
+
 
 
     private void FiltrarPorTipo(ChangeEventArgs e)
+
     {
+
         tipoSeleccionado = e.Value?.ToString() ?? "";
+
         AplicarFiltro();
+
     }
 
     private void AplicarFiltro()
+
     {
-        comidasFiltradas = comidas
-            .Where(b => (string.IsNullOrEmpty(tipoSeleccionado) || b.Descripcion.Contains(tipoSeleccionado, StringComparison.OrdinalIgnoreCase))
-                     && (string.IsNullOrEmpty(busquedaNombre) || b.Nombre.Contains(busquedaNombre, StringComparison.OrdinalIgnoreCase)))
-            .ToList();
+
+        var filtroNombre = busquedaNombre.ToLower();
+
+
+
+        var resultadoFiltrado = comidas
+
+            .Where(c => c.Nombre.ToLower().Contains(filtroNombre) || c.Descripcion.ToLower().Contains(filtroNombre));
+
+
+
+        if (!string.IsNullOrEmpty(tipoSeleccionado))
+
+        {
+
+            resultadoFiltrado = resultadoFiltrado
+
+                .Where(c => c.Categoria.Equals(tipoSeleccionado, StringComparison.OrdinalIgnoreCase)); // Cambiar a 'Tipo' si es necesario
+
+        }
+
+
+
+        comidasFiltradas = resultadoFiltrado.ToList();
+
+        StateHasChanged();
+
     }
+
 }
