@@ -1,16 +1,16 @@
-﻿@page "/Create/Cocineros"
+﻿@page "/Cocineros/Edit/{cocineroId:int}"
 @rendermode InteractiveServer
 @inject CocineroServices cocineroServices
 @inject NavigationManager navigation
 
-<PageTitle>Añadir nuevo cocinero</PageTitle>
-<EditForm Model="cocinero" OnValidSubmit="Crear">
+<PageTitle>Editar Cocinero</PageTitle>
+<EditForm Model="cocinero" OnValidSubmit="Actualizar">
     <DataAnnotationsValidator />
     <div class="container mt-5 pt-5">
         <div class="card shadow-lg">
             @* Header *@
             <div class="card-header" style="background-color: #FF9F1C; color: white;">
-                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Añadir nuevo cocinero</strong></h2>
+                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Editar Cocinero</strong></h2>
             </div>
 
             @* Body *@
@@ -93,28 +93,21 @@
     </div>
 </EditForm>
 
-<style>
-    .gray-border {
-        border: 1px solid gray;
-    }
-</style>
-
 @code {
+    [Parameter] public int cocineroId { get; set; }
     public Cocineros cocinero { get; set; } = new Cocineros();
 
-    public async Task Crear()
+    protected override async Task OnInitializedAsync()
     {
-        if (await Validar())
-        {
-            await cocineroServices.Guardar(cocinero);
-            cocinero = new Cocineros();
-            Volver();
-        }
+        cocinero = await cocineroServices.Buscar(cocineroId) ?? new Cocineros();
     }
 
-    public async Task<bool> Validar()
+    public async Task Actualizar()
     {
-        return await cocineroServices.ValidarCocineroUnico(cocinero.CocineroId, cocinero.NombreCompleto, cocinero.Telefono);
+        if (await cocineroServices.Modificar(cocinero))
+        {
+            Volver();
+        }
     }
 
     public void Volver()
