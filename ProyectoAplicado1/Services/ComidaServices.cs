@@ -32,7 +32,7 @@ public class ComidaServices
         return await _contexto.SaveChangesAsync() > 0;
     }
     //Metodo Modificar 
-    private async Task<bool> Modificar(Comidas comida)
+    public async Task<bool> Modificar(Comidas comida)
     {
         _contexto.Comidas.Update(comida);
         var modificado = await _contexto.SaveChangesAsync() > 0;

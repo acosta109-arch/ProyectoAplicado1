@@ -24,7 +24,7 @@ public class MeserosServices
         _contexto.Meseros.Add(mesero);
         return await _contexto.SaveChangesAsync()>0;
     }
-    private async Task<bool> Modificar(Meseros mesero)
+    public async Task<bool> Modificar(Meseros mesero)
     {
         _contexto.Meseros.Update(mesero);
         return await _contexto.SaveChangesAsync() > 0;

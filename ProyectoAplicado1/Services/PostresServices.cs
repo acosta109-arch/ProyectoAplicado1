@@ -25,7 +25,7 @@ public class PostresServices
         return await _contexto.SaveChangesAsync() > 0;
     }
     //Metodo Modificar
-    private async Task<bool> Modificar(Postres postre)
+    public async Task<bool> Modificar(Postres postre)
     {
         _contexto.Update(postre);
         return await _contexto.SaveChangesAsync() > 0;
