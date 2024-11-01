@@ -1,0 +1,56 @@
+﻿@page "/Meseros/Details/{meseroId:int}"
+@rendermode InteractiveServer
+@inject MeserosServices meseroServices
+@inject NavigationManager navigation
+
+<PageTitle>Detalles del Mesero</PageTitle>
+
+<div class="container mt-5 pt-5">
+    <div class="card shadow-lg">
+        <!-- Header -->
+        <div class="card-header" style="background-color: #FF9F1C; color: white;">
+            <h2 style="font-family: 'Poppins', sans-serif;"><strong>Detalles del Mesero</strong></h2>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <div class="text-center mb-4">
+                @if (!string.IsNullOrEmpty(mesero?.FotoURL))
+                {
+                    <img src="@mesero.FotoURL" alt="Imagen de mesero" class="img-fluid" style="max-width: 250px; border-radius: 10px;">
+                }
+            </div>
+            <div class="mb-3">
+                <strong>Nombre Completo:</strong> @mesero?.NombreCompleto
+            </div>
+            <div class="mb-3">
+                <strong>Teléfono:</strong> @mesero?.Telefono
+            </div>
+            <div class="mb-3">
+                <strong>Estado:</strong> @mesero?.Estado
+            </div>
+            <div class="mb-3">
+                <strong>Especialidad:</strong> @mesero?.Especialidad
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer text-center">
+            <button class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                <i class="fa-solid fa-backward"></i> Volver
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int meseroId { get; set; }
+    private Meseros? mesero;
+
+    protected override async Task OnInitializedAsync()
+    {
+        mesero = await meseroServices.Buscar(meseroId);
+    }
+
+    private void Volver() => navigation.NavigateTo("/Index/Meseros");
+}
