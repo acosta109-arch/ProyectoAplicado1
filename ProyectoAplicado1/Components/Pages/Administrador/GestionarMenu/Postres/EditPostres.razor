@@ -1,0 +1,134 @@
+﻿@page "/Postres/Edit/{postreId:int}"
+@rendermode InteractiveServer
+@inject PostresServices postresServices
+@inject NavigationManager navigation
+
+<PageTitle>Editar Postre</PageTitle>
+<EditForm Model="postres" OnValidSubmit="Actualizar">
+    <DataAnnotationsValidator />
+    <div class="container mt-5 pt-5">
+        <div class="card shadow-lg">
+            @*Header*@
+            <div class="card-header" style="background-color: #FF9F1C; color: white;">
+                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Editar Postre</strong></h2>
+            </div>
+
+            @*Body*@
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label" for="nombre" style="font-family: 'Poppins', sans-serif;"><strong>Nombre del postre</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </span>
+                        <InputText id="nombre" class="form-control" @bind-Value="postres.Nombre" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => postres.Nombre)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="descripcion" style="font-family: 'Poppins', sans-serif;"><strong>Descripción del postre</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </span>
+                        <InputText id="descripcion" class="form-control" @bind-Value="postres.Descripcion" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => postres.Descripcion)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="categoria" style="font-family: 'Poppins', sans-serif;"><strong>Categoría del postre</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </span>
+                        <InputSelect id="categoria" class="form-control" @bind-Value="postres.Categoria" style="border: 1px solid gray;">
+                            <option value="">Seleccione un tipo</option>
+                            <option value="Dulces">Dulces</option>
+                            <option value="Helados">Helados</option>
+                        </InputSelect>
+                    </div>
+                    <ValidationMessage For="@(() => postres.Categoria)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="precio" style="font-family: 'Poppins', sans-serif;"><strong>Precio del postre</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fas fa-dollar-sign"></i>
+                        </span>
+                        <InputNumber id="precio" class="form-control" @bind-Value="postres.Precio" style="border: 1px solid gray;"></InputNumber>
+                    </div>
+                    <ValidationMessage For="@(() => postres.Precio)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="disponibilidad" style="font-family: 'Poppins', sans-serif;"><strong>Disponibilidad</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fas fa-check-circle"></i>
+                        </span>
+                        <InputSelect id="disponibilidad" class="form-control" @bind-Value="postres.Disponibilidad" style="border: 1px solid gray;">
+                            <option value="">Seleccione una opción</option>
+                            <option value="Disponible">Disponible</option>
+                            <option value="No disponible">No disponible</option>
+                        </InputSelect>
+                    </div>
+                    <ValidationMessage For="@(() => postres.Disponibilidad)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="fotoURL" style="font-family: 'Poppins', sans-serif;"><strong>Url de la imagen del postre</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fas fa-image"></i>
+                        </span>
+                        <InputText id="fotoURL" class="form-control" @bind-Value="postres.FotoURL" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => postres.FotoURL)"></ValidationMessage>
+                </div>
+            </div>
+
+            @*Footer*@
+            <div class="card-footer">
+                <button type="button" class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                    <i class="fa-solid fa-backward"></i> Volver
+                </button>
+                <button type="submit" class="btn" style="background-color: #FF9F1C; color: white;">
+                    <i class="fa-solid fa-check"></i> Actualizar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .gray-border {
+            border: 1px solid gray;
+        }
+    </style>
+</EditForm>
+
+@code {
+    [Parameter] public int postreId { get; set; }
+    public Postres postres { get; set; } = new Postres();
+
+    protected override async Task OnInitializedAsync()
+    {
+        postres = await postresServices.Buscar(postreId);
+    }
+
+    public async Task Actualizar()
+    {
+        if (postres != null)
+        {
+            await postresServices.Modificar(postres);
+            Volver();
+        }
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Index/Postres");
+    }
+}

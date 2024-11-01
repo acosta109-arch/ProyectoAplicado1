@@ -1,0 +1,71 @@
+﻿@page "/Postres/Delete/{postreId:int}"
+@rendermode InteractiveServer
+@inject PostresServices postresServices
+@inject NavigationManager navigation
+
+<PageTitle>Eliminar Postre</PageTitle>
+
+<div class="container mt-5 pt-5">
+    <div class="card shadow-lg">
+        <!-- Header -->
+        <div class="card-header" style="background-color: #FF9F1C; color: white;">
+            <h2 style="font-family: 'Poppins', sans-serif;"><strong>Eliminar Postre</strong></h2>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <div class="text-center mb-4">
+                @if (!string.IsNullOrEmpty(postres?.FotoURL))
+                {
+                    <img src="@postres.FotoURL" alt="Imagen de postre" class="img-fluid" style="max-width: 250px; border-radius: 10px;">
+                }
+            </div>
+            <div class="mb-3">
+                <strong>Nombre del postre:</strong> @postres?.Nombre
+            </div>
+            <div class="mb-3">
+                <strong>Descripción:</strong> @postres?.Descripcion
+            </div>
+            <div class="mb-3">
+                <strong>Categoría:</strong> @postres?.Categoria
+            </div>
+            <div class="mb-3">
+                <strong>Precio:</strong> @postres?.Precio.ToString("C2")
+            </div>
+            <div class="mb-3">
+                <strong>Disponibilidad:</strong> @postres?.Disponibilidad
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer text-center">
+            <button class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                <i class="fa-solid fa-backward"></i> Volver
+            </button>
+            <button class="btn btn-danger" @onclick="ConfirmarEliminar">
+                <i class="fa-solid fa-trash"></i> Confirmar Eliminación
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int postreId { get; set; }
+    private Postres? postres;
+
+    protected override async Task OnInitializedAsync()
+    {
+        postres = await postresServices.Buscar(postreId);
+    }
+
+    private void Volver() => navigation.NavigateTo("/Index/Postres");
+
+    private async Task ConfirmarEliminar()
+    {
+        if (postres != null)
+        {
+            await postresServices.Eliminar(postreId);
+            navigation.NavigateTo("/Index/Postres");
+        }
+    }
+}
