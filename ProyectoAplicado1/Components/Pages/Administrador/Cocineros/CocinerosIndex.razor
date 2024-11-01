@@ -125,6 +125,7 @@
 
     <div class="row" id="cocinero-list" style="font-family: 'Poppins', sans-serif;">
         @foreach (var cocinero in cocinerosFiltrados)
+
         {
             <div class="col-md-3 mb-4 text-center">
                 <div class="card product-card h-100">
@@ -165,28 +166,50 @@
 
 @code {
     public List<Cocineros> cocineros = new List<Cocineros>();
+
     private string especialidadSeleccionada = "";
+
     private string busquedaNombre = "";
+
     private List<Cocineros> cocinerosFiltrados = new();
 
+
+
     protected override async Task OnInitializedAsync()
+
     {
+
         cocineros = await cocinerosServices.Listar(c => true);
+
         AplicarFiltro();
+
     }
+
+
 
     private void FiltrarPorEspecialidad(ChangeEventArgs e)
+
     {
+
         especialidadSeleccionada = e.Value?.ToString() ?? "";
+
         AplicarFiltro();
+
     }
+
+
 
     private void AplicarFiltro()
+
     {
+
         cocinerosFiltrados = cocineros
+
             .Where(c => (string.IsNullOrEmpty(especialidadSeleccionada) || c.Especialidad.Contains(especialidadSeleccionada, StringComparison.OrdinalIgnoreCase))
+
                      && (string.IsNullOrEmpty(busquedaNombre) || c.NombreCompleto.Contains(busquedaNombre, StringComparison.OrdinalIgnoreCase)))
+
             .ToList();
+
     }
 }
-
