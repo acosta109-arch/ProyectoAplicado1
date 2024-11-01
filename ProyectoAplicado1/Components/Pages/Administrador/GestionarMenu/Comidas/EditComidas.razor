@@ -1,0 +1,134 @@
+﻿@page "/Comidas/Edit/{comidaId:int}"
+@rendermode InteractiveServer
+@inject ComidaServices comidasServices
+@inject NavigationManager navigation
+
+<PageTitle>Editar Comida</PageTitle>
+<EditForm Model="comidas" OnValidSubmit="Actualizar">
+    <DataAnnotationsValidator />
+    <div class="container mt-5 pt-5">
+        <div class="card shadow-lg">
+            @*Header*@
+            <div class="card-header" style="background-color: #FF9F1C; color: white;">
+                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Editar Comida</strong></h2>
+            </div>
+
+            @*Body*@
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label" for="nombres" style="font-family: 'Poppins', sans-serif;"><strong>Nombre de la comida</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </span>
+                        <InputText id="nombres" class="form-control" @bind-Value="comidas.Nombre" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => comidas.Nombre)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="descripcion" style="font-family: 'Poppins', sans-serif;"><strong>Descripción de la comida</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </span>
+                        <InputText id="descripcion" class="form-control" @bind-Value="comidas.Descripcion" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => comidas.Descripcion)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="categoria" style="font-family: 'Poppins', sans-serif;"><strong>Categoría de la comida</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </span>
+                        <InputSelect id="categoria" class="form-control" @bind-Value="comidas.Categoria" style="border: 1px solid gray;">
+                            <option value="">Seleccione un tipo</option>
+                            <option value="Entradas">Entradas</option>
+                            <option value="Platos fuertes">Platos fuertes</option>
+                        </InputSelect>
+                    </div>
+                    <ValidationMessage For="@(() => comidas.Categoria)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="precio" style="font-family: 'Poppins', sans-serif;"><strong>Precio de la comida</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fas fa-dollar-sign"></i>
+                        </span>
+                        <InputNumber id="precio" class="form-control" @bind-Value="comidas.Precio" style="border: 1px solid gray;"></InputNumber>
+                    </div>
+                    <ValidationMessage For="@(() => comidas.Precio)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="disponibilidad" style="font-family: 'Poppins', sans-serif;"><strong>Disponibilidad</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fas fa-check-circle"></i>
+                        </span>
+                        <InputSelect id="disponibilidad" class="form-control" @bind-Value="comidas.Disponibilidad" style="border: 1px solid gray;">
+                            <option value="">Seleccione una opción</option>
+                            <option value="Disponible">Disponible</option>
+                            <option value="No disponible">No disponible</option>
+                        </InputSelect>
+                    </div>
+                    <ValidationMessage For="@(() => comidas.Disponibilidad)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="fotoURL" style="font-family: 'Poppins', sans-serif;"><strong>Url de la imagen de la comida</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fas fa-image"></i>
+                        </span>
+                        <InputText id="fotoURL" class="form-control" @bind-Value="comidas.FotoURL" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => comidas.FotoURL)"></ValidationMessage>
+                </div>
+            </div>
+
+            @*Footer*@
+            <div class="card-footer">
+                <button type="button" class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                    <i class="fa-solid fa-backward"></i> Volver
+                </button>
+                <button type="submit" class="btn" style="background-color: #FF9F1C; color: white;">
+                    <i class="fa-solid fa-check"></i> Actualizar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .gray-border {
+            border: 1px solid gray;
+        }
+    </style>
+</EditForm>
+
+@code {
+    [Parameter] public int comidaId { get; set; }
+    public Comidas comidas { get; set; } = new Comidas();
+
+    protected override async Task OnInitializedAsync()
+    {
+        comidas = await comidasServices.Buscar(comidaId);
+    }
+
+    public async Task Actualizar()
+    {
+        if (comidas != null)
+        {
+            await comidasServices.Modificar(comidas);
+            Volver();
+        }
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Index/Comidas");
+    }
+}

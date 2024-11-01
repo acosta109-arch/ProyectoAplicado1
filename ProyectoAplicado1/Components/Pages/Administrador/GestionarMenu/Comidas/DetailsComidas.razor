@@ -1,0 +1,59 @@
+﻿@page "/Comidas/Details/{comidaId:int}"
+@rendermode InteractiveServer
+@inject ComidaServices comidasServices
+@inject NavigationManager navigation
+
+<PageTitle>Detalles de la Comida</PageTitle>
+
+<div class="container mt-5 pt-5">
+    <div class="card shadow-lg">
+        <!-- Header -->
+        <div class="card-header" style="background-color: #FF9F1C; color: white;">
+            <h2 style="font-family: 'Poppins', sans-serif;"><strong>Detalles de la Comida</strong></h2>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <div class="text-center mb-4">
+                @if (!string.IsNullOrEmpty(comidas?.FotoURL))
+                {
+                    <img src="@comidas.FotoURL" alt="Imagen de comida" class="img-fluid" style="max-width: 250px; border-radius: 10px;">
+                }
+            </div>
+            <div class="mb-3">
+                <strong>Nombre de la comida:</strong> @comidas?.Nombre
+            </div>
+            <div class="mb-3">
+                <strong>Descripción:</strong> @comidas?.Descripcion
+            </div>
+            <div class="mb-3">
+                <strong>Tipo:</strong> @comidas?.Categoria
+            </div>
+            <div class="mb-3">
+                <strong>Precio:</strong> @comidas?.Precio
+            </div>
+            <div class="mb-3">
+                <strong>Disponibilidad:</strong> @comidas?.Disponibilidad
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer text-center">
+            <button class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                <i class="fa-solid fa-backward"></i> Volver
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int comidaId { get; set; }
+    private Comidas? comidas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        comidas = await comidasServices.Buscar(comidaId);
+    }
+
+    private void Volver() => navigation.NavigateTo("/Index/Comidas");
+}
