@@ -1,19 +1,21 @@
-﻿@page "/Create/Bebidas"
+﻿@page "/Bebidas/Edit/{bebidaId:int}"
 @rendermode InteractiveServer
 @inject BebidasServices bebidasServices
 @inject NavigationManager navigation
 
-<PageTitle>Añadir nueva bebida</PageTitle>
-<EditForm Model="bebidas" OnValidSubmit="Crear">
+<PageTitle>Editar bebida</PageTitle>
+
+<EditForm Model="bebidas" OnValidSubmit="Actualizar">
     <DataAnnotationsValidator />
     <div class="container mt-5 pt-5">
         <div class="card shadow-lg">
-            @*Header*@
+            <!-- Header -->
             <div class="card-header" style="background-color: #FF9F1C; color: white;">
-                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Añadir nueva bebida</strong></h2>
+                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Editar bebida</strong></h2>
             </div>
-            @*Body*@
+            <!-- Body -->
             <div class="card-body">
+                <!-- Nombre de la bebida -->
                 <div class="mb-3">
                     <label class="form-label" for="nombres" style="font-family: 'Poppins', sans-serif;"><strong>Nombre de la bebida</strong></label>
                     <div class="input-group">
@@ -25,6 +27,7 @@
                     <ValidationMessage For="@(() => bebidas.Nombre)"></ValidationMessage>
                 </div>
 
+                <!-- Descripción de la bebida -->
                 <div class="mb-3">
                     <label class="form-label" for="descripcion" style="font-family: 'Poppins', sans-serif;"><strong>Descripción de la bebida</strong></label>
                     <div class="input-group">
@@ -36,6 +39,7 @@
                     <ValidationMessage For="@(() => bebidas.Descripcion)"></ValidationMessage>
                 </div>
 
+                <!-- Tipo de bebida -->
                 <div class="mb-3">
                     <label class="form-label" for="tipoBebida" style="font-family: 'Poppins', sans-serif;"><strong>Tipo de bebida</strong></label>
                     <div class="input-group">
@@ -53,6 +57,7 @@
                     <ValidationMessage For="@(() => bebidas.Tipo)"></ValidationMessage>
                 </div>
 
+                <!-- Precio de la bebida -->
                 <div class="mb-3">
                     <label class="form-label" for="precio" style="font-family: 'Poppins', sans-serif;"><strong>Precio de la bebida</strong></label>
                     <div class="input-group">
@@ -64,6 +69,7 @@
                     <ValidationMessage For="@(() => bebidas.Precio)"></ValidationMessage>
                 </div>
 
+                <!-- Disponibilidad -->
                 <div class="mb-3">
                     <label class="form-label" for="disponibilidad" style="font-family: 'Poppins', sans-serif;"><strong>Disponibilidad</strong></label>
                     <div class="input-group">
@@ -79,6 +85,7 @@
                     <ValidationMessage For="@(() => bebidas.Disponibilidad)"></ValidationMessage>
                 </div>
 
+                <!-- URL de la imagen de la bebida -->
                 <div class="mb-3">
                     <label class="form-label" for="fotoURL" style="font-family: 'Poppins', sans-serif;"><strong>Url de la imagen de la bebida</strong></label>
                     <div class="input-group">
@@ -91,7 +98,7 @@
                 </div>
             </div>
 
-            @*Footer*@
+            <!-- Footer -->
             <div class="card-footer">
                 <button type="button" class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
                     <i class="fa-solid fa-backward"></i> Volver
@@ -104,34 +111,26 @@
     </div>
 </EditForm>
 
-<style>
-    .gray-border {
-        border: 1px solid gray;
-    }
-</style>
-
 @code {
-    public Bebidas bebidas { get; set; } = new Bebidas();
-    public bool NombreRepetido { get; set; }
+    [Parameter] public int bebidaId { get; set; }
+    private Bebidas bebidas = new Bebidas();
 
-    public async Task<bool> Validar()
+    protected override async Task OnInitializedAsync()
     {
-        var existeBebida = await bebidasServices.ValidarBebidaUnica(bebidas.BebidaId, bebidas.Nombre, bebidas.Descripcion);
-        return existeBebida == null;
+        bebidas = await bebidasServices.Buscar(bebidaId) ?? new Bebidas();
     }
 
-    public async Task Crear()
+    private async Task Actualizar()
     {
-        if (!await Validar())
+        if (await bebidasServices.Modificar(bebidas))
         {
-            await bebidasServices.Guardar(bebidas);
-            bebidas = new Bebidas();
             Volver();
         }
     }
 
-    public void Volver()
+    private void Volver()
     {
         navigation.NavigateTo("/Index/Bebidas");
     }
 }
+
