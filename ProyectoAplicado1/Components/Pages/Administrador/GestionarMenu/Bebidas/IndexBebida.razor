@@ -160,6 +160,7 @@
 
     <div class="row" id="product-list" style="font-family: 'Poppins', sans-serif;">
         @foreach (var bebida in bebidasFiltradas)
+
         {
             <div class="col-md-3 mb-4">
                 <div class="card product-card h-100">
@@ -200,27 +201,50 @@
 
 @code {
     public List<Bebidas> bebidas = new List<Bebidas>();
+
     private string tipoSeleccionado = "";
+
     private string busquedaNombre = "";
+
     private List<Bebidas> bebidasFiltradas = new();
 
+
+
     protected override async Task OnInitializedAsync()
+
     {
+
         bebidas = await bebidasServices.Listar(c => true);
+
         AplicarFiltro();
+
     }
+
+
 
     private void FiltrarPorTipo(ChangeEventArgs e)
+
     {
+
         tipoSeleccionado = e.Value?.ToString() ?? "";
+
         AplicarFiltro();
+
     }
 
+
+
     private void AplicarFiltro()
+
     {
+
         bebidasFiltradas = bebidas
+
             .Where(b => (string.IsNullOrEmpty(tipoSeleccionado) || b.Tipo.Contains(tipoSeleccionado, StringComparison.OrdinalIgnoreCase))
+
                      && (string.IsNullOrEmpty(busquedaNombre) || b.Nombre.Contains(busquedaNombre, StringComparison.OrdinalIgnoreCase)))
+
             .ToList();
+
     }
 }
