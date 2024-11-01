@@ -198,6 +198,7 @@
     </div>
     <div class="row" id="product-list" style="font-family: 'Poppins', sans-serif;">
         @foreach (var postre in postresFiltrados)
+
         {
             <div class="col-md-3 mb-4">
                 <div class="card product-card h-100">
@@ -238,35 +239,78 @@
     </div>
 </div>
 
-
-
-
 @code {
     public List<Postres> postres = new List<Postres>();
+
     private string filtro = "";
+
     private string valorFiltro = "";
-    private List<Postres> postresFiltrados = new();
+
+    private List<Postres> postresFiltrados = new List<Postres>();
+
     private string tipoSeleccionado = "";
+
     private string busquedaNombre = "";
 
+
+
     protected override async Task OnInitializedAsync()
+
     {
+
         postres = await postresService.Listar(c => true);
+
         AplicarFiltro();
+
     }
+
 
 
     private void FiltrarPorTipo(ChangeEventArgs e)
+
     {
+
         tipoSeleccionado = e.Value?.ToString() ?? "";
+
         AplicarFiltro();
+
     }
 
+
+
     private void AplicarFiltro()
+
     {
-        postresFiltrados = postres
-            .Where(b => (string.IsNullOrEmpty(tipoSeleccionado) || b.Descripcion.Contains(tipoSeleccionado, StringComparison.OrdinalIgnoreCase))
-                     && (string.IsNullOrEmpty(busquedaNombre) || b.Nombre.Contains(busquedaNombre, StringComparison.OrdinalIgnoreCase)))
-            .ToList();
+
+        var filtroNombre = busquedaNombre.ToLower();
+
+
+
+        // Filtrar por nombre y descripción primero
+
+        var resultadoFiltrado = postres
+
+            .Where(c => c.Nombre.ToLower().Contains(filtroNombre) || c.Descripcion.ToLower().Contains(filtroNombre));
+
+
+
+        // Luego aplicar el filtro por tipo si se ha seleccionado uno
+
+        if (!string.IsNullOrEmpty(tipoSeleccionado))
+
+        {
+
+            resultadoFiltrado = resultadoFiltrado
+
+                .Where(c => c.Categoria.Equals(tipoSeleccionado, StringComparison.OrdinalIgnoreCase));
+
+        }
+
+        postresFiltrados = resultadoFiltrado.ToList();
+
+
+
+        StateHasChanged();
+
     }
 }
