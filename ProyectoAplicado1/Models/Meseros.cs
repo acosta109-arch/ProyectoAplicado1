@@ -11,10 +11,6 @@ public class Meseros
     [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "El nombre completo solo puede contener letras.")]
     public string NombreCompleto { get; set; }
 
-    [Required(ErrorMessage = "La especialidad es obligatoria.")]
-    [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "La especialidad solo puede contener letras.")]
-    public string Especialidad { get; set; }
-
     [Required(ErrorMessage = "El teléfono es obligatorio.")]
     [RegularExpression(@"^\d{10}$", ErrorMessage = "El teléfono debe tener exactamente 10 dígitos.")]
     public string Telefono { get; set; }
