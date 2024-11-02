@@ -11,7 +11,7 @@ using ProyectoAplicado1.Data;
 namespace ProyectoAplicado1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241025163500_Inicial")]
+    [Migration("20241102040906_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -252,10 +252,6 @@ namespace ProyectoAplicado1.Migrations
                     b.Property<int>("MeseroId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Especialidad")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Estado")
                         .IsRequired()

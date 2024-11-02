@@ -250,10 +250,6 @@ namespace ProyectoAplicado1.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Especialidad")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Estado")
                         .IsRequired()
                         .HasColumnType("TEXT");
