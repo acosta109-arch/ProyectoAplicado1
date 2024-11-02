@@ -113,12 +113,12 @@
         <a href="/Create/Meseros" class="btn btn-custom"><i class="fa-solid fa-square-plus"></i> Añadir mesero</a>
     </div>
     <div class="filter-container mb-4">
-        <input type="text" class="form-control search-box" placeholder="Buscar por nombre..." @oninput="AplicarFiltro" @bind="busquedaNombre" />
-        <select class="form-select specialty-selector" @onchange="FiltrarPorEspecialidad">
+        <input type="text" class="form-control search-box" placeholder="Buscar..."
+               @bind="busquedaNombre" @oninput="AplicarFiltro" />
+        <select class="form-select specialty-selector" @bind="especialidadSeleccionada">
             <option value="">Todas</option>
-            <option value="Servicio General">Servicio General</option>
-            <option value="VIP">VIP</option>
-            <option value="Bodas y Eventos">Bodas y Eventos</option>
+            <option value="Nombre">Nombre</option>
+            <option value="Telefono">Teléfono</option>
         </select>
     </div>
 
@@ -163,30 +163,53 @@
 
 @code {
     public List<Meseros> meseros = new List<Meseros>();
-    private string especialidadSeleccionada = "";
+    private string meseroSeleccionado = "";
     private string busquedaNombre = "";
     private string busquedaTelefono = "";
-    private List<Meseros> meserosFiltrados = new();
+    private List<Meseros> meserosFiltrados = new List<Meseros>();
 
     protected override async Task OnInitializedAsync()
     {
         meseros = await meserosServices.Listar(m => true);
+        meserosFiltrados = meseros.ToList();
         AplicarFiltro();
     }
 
-    private void FiltrarPorEspecialidad(ChangeEventArgs e)
+    private string especialidadSeleccionada
     {
-        especialidadSeleccionada = e.Value?.ToString() ?? "";
-        AplicarFiltro();
+        get => _especialidadSeleccionada;
+        set
+        {
+            if (_especialidadSeleccionada != value)
+            {
+                _especialidadSeleccionada = value;
+                AplicarFiltro(); // Llama al método de filtrado al cambiar la especialidad.
+            }
+        }
     }
+    private string _especialidadSeleccionada; // Campo privado para el valor real.
 
     private void AplicarFiltro()
     {
-        meserosFiltrados = meseros
-            .Where(m => (string.IsNullOrEmpty(especialidadSeleccionada) || m.Especialidad.Contains(especialidadSeleccionada, StringComparison.OrdinalIgnoreCase))
-                     && (string.IsNullOrEmpty(busquedaNombre) || m.NombreCompleto.Contains(busquedaNombre, StringComparison.OrdinalIgnoreCase))
-                     && (string.IsNullOrEmpty(busquedaTelefono) || m.Telefono.Contains(busquedaTelefono, StringComparison.OrdinalIgnoreCase)))
-            .ToList();
+        var filtroTexto = busquedaNombre.ToLower().Trim();
+        var resultadoFiltrado = meseros.AsQueryable();
+
+        // Verifica la especialidad seleccionada y aplica el filtro correspondiente
+        if (especialidadSeleccionada == "Nombre" && !string.IsNullOrWhiteSpace(filtroTexto))
+        {
+            resultadoFiltrado = resultadoFiltrado
+                .Where(c => c.NombreCompleto.ToLower().Contains(filtroTexto));
+        }
+        else if (especialidadSeleccionada == "Telefono" && !string.IsNullOrWhiteSpace(filtroTexto))
+        {
+            resultadoFiltrado = resultadoFiltrado
+                .Where(c => c.Telefono.ToLower().Contains(filtroTexto));
+        }
+
+        // Si no hay filtro aplicado, se muestran todos los meseros
+        meserosFiltrados = resultadoFiltrado.ToList();
+
+        // Actualiza la UI
+        StateHasChanged();
     }
 }
-
