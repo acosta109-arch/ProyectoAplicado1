@@ -27,22 +27,6 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label" for="especialidad" style="font-family: 'Poppins', sans-serif;"><strong>Especialidad</strong></label>
-                    <div class="input-group">
-                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
-                            <i class="fa-solid fa-layer-group"></i>
-                        </span>
-                        <InputSelect id="especialidad" class="form-control" @bind-Value="mesero.Especialidad" style="border: 1px solid gray;">
-                            <option value="">Seleccione una especialidad</option>
-                            <option value="Pasteleria">Pasteleria</option>
-                            <option value="Gastronomia">Gastronomia</option>
-                            <option value="Vegetariana">Vegetariana</option>
-                        </InputSelect>
-                    </div>
-                    <ValidationMessage For="@(() => mesero.Especialidad)"></ValidationMessage>
-                </div>
-
-                <div class="mb-3">
                     <label class="form-label" for="telefono" style="font-family: 'Poppins', sans-serif;"><strong>Teléfono</strong></label>
                     <div class="input-group">
                         <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
