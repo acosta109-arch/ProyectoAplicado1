@@ -82,7 +82,7 @@ namespace ProyectoAplicado1
 
             var app = builder.Build();
 
-            // Ejecutar el método para crear roles y asignar al usuario
+          //  Ejecutar el método para crear roles y asignar al usuario
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
