@@ -13,6 +13,20 @@
         HOLA MUNDO...
     </h1>
 
+    <!--ReadOnly-->
+    <div class="project-description mt-5">
+        <h2 class="text-center">Descripci&oacute;n del Proyecto</h2>
+        <p class="text-center" style="font-size: 1.2rem; color: #555;">
+            Este proyecto tiene como objetivo proporcionar una plataforma interactiva para la gestión de pedidos en un restaunrante. 
+            La aplicación está diseñada para tres áreas principales:
+        </p>
+        <ul class="text-center project-list">
+            <li><strong>Parte Administrativa:</strong>Incluye la gestión de productos, cocineros y operaciones del restaurante.</li>
+            <li><strong>Parte Local:</strong>Permite a los clientes acceder al menú, realizar pedidos y pagar desde su dispositivo móvil mientras están en el restaurante.</li>
+            <li><strong>Parte Remota:</strong>Ofrece la posibilidad de realizar pedidos a domicilio y gestionar entregas, facilitando la experiencia del cliente fuera del local.</li>
+        </ul>
+    </div>
+
 </div>
 
 <style>
@@ -35,4 +49,34 @@
         right: 20px;
         z-index: 10; /* Ensure the button is above other elements */
     }
+
+    .project-description {
+        background-color: #FFFFFF; /* Fondo blanco */
+        border: 1px solid #FFBF69; /* Borde con el color secundario */
+        border-radius: 10px; /* Bordes redondeados */
+        padding: 20px; /* Espaciado interno */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para el contenedor */
+    }
+
+    .project-list {
+        list-style-type: none; /* Elimina las viñetas por defecto */
+        padding: 0; /* Sin padding */
+        margin: 0; /* Sin margen */
+    }
+
+        .project-list li {
+            margin: 10px 0; /* Espaciado entre los elementos de la lista */
+            font-size: 1.1rem; /* Tamaño de fuente */
+            color: #333; /* Color del texto */
+            text-align: left; /* Alineación a la izquierda */
+        }
+
+            .project-list li::before {
+                content: "•"; /* Viñeta personalizada */
+                color: #FFBF69; /* Color de la viñeta */
+                font-weight: bold; /* Peso de la viñeta */
+                display: inline-block; /* Para alineación */
+                width: 1em; /* Espacio reservado para la viñeta */
+            }
+
 </style>
