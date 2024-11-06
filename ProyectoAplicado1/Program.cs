@@ -7,6 +7,7 @@ using ProyectoAplicado1.Components.Account;
 using ProyectoAplicado1.Data;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
+using ProyectoAplicado1.Services;
 
 namespace ProyectoAplicado1
 {
@@ -69,6 +70,7 @@ namespace ProyectoAplicado1
             builder.Services.AddScoped<BebidasServices>();
             builder.Services.AddScoped<PostresServices>();
             builder.Services.AddScoped<MeserosServices>();
+            builder.Services.AddScoped<CarritoService>();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
