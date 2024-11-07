@@ -1,5 +1,6 @@
 ﻿@page "/local/mesa/1"
 @inject ComidaServices comidasService
+@inject BebidasServices bebidasServices
 
 <div class="wrapper">
     <div class="menu-header">
@@ -12,7 +13,22 @@
         </div>
     </div>
     <div class="product-list">
-        @foreach (var bebida in comidasFiltradas)
+        @foreach (var comida in comidasFiltradas)
+        {
+            <div class="product-item">
+                <img src="@comida.FotoURL" alt="@comida.Nombre">
+                <div class="product-info">
+                    <h5 class="card-title">@comida.Nombre</h5>
+                    <p class="card-text">@comida.Descripcion</p>
+                    <div>
+                        <p class="price"><strong>RD$ @comida.Precio</strong></p>
+                        <button class="btn">Detalles</button>
+                    </div>
+                </div>
+                <button class=" btn add-to-cart"><i class="bi bi-plus"></i></button>
+            </div>
+        }
+        @foreach (var bebida in bebidasFiltradas)
         {
             <div class="product-item">
                 <img src="@bebida.FotoURL" alt="@bebida.Nombre">
@@ -24,13 +40,17 @@
                         <button class="btn">Detalles</button>
                     </div>
                 </div>
-                <button class=" btn add-to-cart"><i class="bi bi-plus"></i></button>
+                <button class="btn add-to-cart"><i class="bi bi-plus"></i></button>
             </div>
         }
     </div>
 </div>
 
 <style>
+    body {
+        width: 100%;
+        height: 100vh;
+    }
     #NavigationBar {
         display: none;
     }
@@ -38,14 +58,12 @@
     .wrapper {
         position: absolute;
         width: 100%;
-        height: 100vh;
         background-color: #FEFEFE;
     }
 
     .menu-header {
-        position: fixed;
         width: 100%;
-        height: 10vh;
+        height: fit-content;
         background-color: rgba(255, 159, 28, 0.3);
         backdrop-filter: blur(20px);
     }
@@ -60,11 +78,9 @@
     }
 
     .product-list {
-        margin-top: 10vh;
         margin-left: auto;
         margin-right: auto;
         width: 95%;
-        height: 90vh;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -75,16 +91,19 @@
         display: flex;
         width: 100%;
         background-color: #CBF3F0;
+        box-shadow: 0px 15px 10px 1px rgba(0, 0, 0, 0.1);
     }
 
     .product-item img {
         width: 35%;
-        border-radius: 8px;
+        border-radius: 8px 0px 0px 8px;
     }
 
     .product-item .product-info {
         margin-left: 16px;
         display: flex;
+        justify-content: space-between;
+        align-items: center;
         width: 55%;
         flex-direction: column;
     }
@@ -101,25 +120,28 @@
 
     .add-to-cart {
         width: 10%;
-        height: 100%;
         background-color: #2EC4B6;
     }
 </style>
 
 @code {
     public List<Comidas> comidas = new List<Comidas>();
+    private List<Comidas> comidasFiltradas = new();
+    public List<Bebidas> bebidas = new List<Bebidas>();
+    private List<Bebidas> bebidasFiltradas = new();
     private string filtro = "";
     private string valorFiltro = "";
-    private List<Comidas> comidasFiltradas = new();
     private string tipoSeleccionado = "";
     private string busquedaNombre = "";
+    private string tipoBebidaSeleccionado = "";
+    private string busquedaBebidabyNombre = "";
 
     protected override async Task OnInitializedAsync()
     {
         comidas = await comidasService.Listar(c => true);
+        bebidas = await bebidasServices.Listar(c => true);
         AplicarFiltro();
     }
-
 
     private void FiltrarPorTipo(ChangeEventArgs e)
     {
@@ -131,7 +153,11 @@
     {
         comidasFiltradas = comidas
             .Where(b => (string.IsNullOrEmpty(tipoSeleccionado) || b.Descripcion.Contains(tipoSeleccionado, StringComparison.OrdinalIgnoreCase))
-                     && (string.IsNullOrEmpty(busquedaNombre) || b.Nombre.Contains(busquedaNombre, StringComparison.OrdinalIgnoreCase)))
+                     && (string.IsNullOrEmpty(busquedaBebidabyNombre) || b.Nombre.Contains(busquedaBebidabyNombre, StringComparison.OrdinalIgnoreCase)))
             .ToList();
+
+        bebidasFiltradas = bebidas
+        .Where(b => (string.IsNullOrEmpty(tipoBebidaSeleccionado) || b.Tipo.Contains(tipoBebidaSeleccionado, StringComparison.OrdinalIgnoreCase))
+                 && (string.IsNullOrEmpty(busquedaNombre) || b.Nombre.Contains(busquedaNombre, StringComparison.OrdinalIgnoreCase))).ToList();
     }
 }
