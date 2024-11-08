@@ -1,0 +1,52 @@
+﻿@page "/itemdetails/{ItemId:int}"
+@inject ComidaServices comidasService
+@inject BebidasServices bebidasServices
+@using ProyectoAplicado1.Models
+
+<style>
+    .item-details {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px;
+    }
+
+    .item-image {
+        width: 200px;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="item-details">
+    @if (item != null)
+    {
+        <img src="@item.FotoURL" alt="@Item.Nombre" class="item-image">
+        <h2>@item.Nombre</h2>
+        <p><strong>Descripci&oacute;n</strong> @item.Descripcion</p>
+        <p><strong>Precio:</strong>RD$ @item.Precio</p>
+        <p><strong>Disponibilidad:</strong> @item.Disponibilidad</p>
+    }
+    else
+    {
+        <p>El item solicitado no fue encontrado.</p>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int ItemId { get; set; }
+
+    private Item item;
+
+    protected override async Task OnInitializedAsync()
+    {
+        item = await comidasService.ObtenerPorId(ItemId) ?? await bebidasServices.ObtenerPorId(ItemId);
+
+        if (item == null)
+        {
+            //Manejo de caso cuando el item no existe
+        }
+    }
+}
