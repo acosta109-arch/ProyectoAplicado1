@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProyectoAplicado.Models;
+using ProyectoAplicado1.Models;
 
 namespace ProyectoAplicado1.Data
 {
@@ -12,6 +13,8 @@ namespace ProyectoAplicado1.Data
         public DbSet<Comidas> Comidas { get; set; }
         public DbSet<Meseros> Meseros { get; set; }
         public DbSet<Postres> Postres { get; set; }
+
+        public DbSet<Item> Items { get; set; }
     }
 }
           
