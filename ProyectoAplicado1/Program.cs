@@ -18,28 +18,44 @@ namespace ProyectoAplicado1
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            // Definir los roles que se necesitan
-            string[] roleNames = { "Admin" };
+            // Define the roles that are needed
+            string[] roleNames = { "Admin", "Cliente" };
             IdentityResult roleResult;
 
             foreach (var roleName in roleNames)
             {
-                // Verificar si el rol ya existe
+                // Check if the role already exists
                 var roleExist = await roleManager.RoleExistsAsync(roleName);
                 if (!roleExist)
                 {
-                    // Crear el rol si no existe
+                    // Create the role if it does not exist
                     roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
 
-            // Buscar el usuario por email
-            var user = await userManager.FindByEmailAsync("Admin@gmail.com");
+            // Check for the admin user
+            var adminEmail = "Admin@gmail.com";
+            var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
-            // Si el usuario existe, añadirlo al rol "Admin"
-            if (user != null)
+            // If the admin user exists, add them to the "Admin" role
+            if (adminUser != null)
             {
-                await userManager.AddToRoleAsync(user, "Admin");
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+            }
+
+            // Get all users to assign the "Cliente" role to those without the admin email
+            var users = userManager.Users.ToList(); // Note: You may want to use `ToArrayAsync()` for better performance
+            foreach (var user in users)
+            {
+                if (user.Email != adminEmail)
+                {
+                    // Add user to the "Cliente" role if they are not the admin
+                    var isInRole = await userManager.IsInRoleAsync(user, "Cliente");
+                    if (!isInRole)
+                    {
+                        await userManager.AddToRoleAsync(user, "Cliente");
+                    }
+                }
             }
         }
 
@@ -71,6 +87,9 @@ namespace ProyectoAplicado1
             builder.Services.AddScoped<PostresServices>();
             builder.Services.AddScoped<MeserosServices>();
             builder.Services.AddScoped<CarritoService>();
+            builder.Services.AddScoped<ItemsService>();
+            builder.Services.AddScoped<OrdenesServices>();
+            builder.Services.AddScoped<OrdenItemServices>();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
