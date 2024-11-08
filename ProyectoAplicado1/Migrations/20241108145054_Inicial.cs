@@ -104,6 +104,23 @@ namespace ProyectoAplicado1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Items",
+                columns: table => new
+                {
+                    ItemId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: false),
+                    Descripcion = table.Column<string>(type: "TEXT", nullable: false),
+                    Tipo = table.Column<string>(type: "TEXT", nullable: false),
+                    Precio = table.Column<decimal>(type: "TEXT", nullable: false),
+                    FotoURL = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.ItemId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Meseros",
                 columns: table => new
                 {
@@ -117,6 +134,21 @@ namespace ProyectoAplicado1.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Meseros", x => x.MeseroId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ordenes",
+                columns: table => new
+                {
+                    OrdenId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Fecha = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Cliente = table.Column<string>(type: "TEXT", nullable: false),
+                    Total = table.Column<decimal>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ordenes", x => x.OrdenId);
                 });
 
             migrationBuilder.CreateTable(
@@ -243,6 +275,33 @@ namespace ProyectoAplicado1.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "OrdenItems",
+                columns: table => new
+                {
+                    OrdenItemId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    OrdenId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ItemId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Cantidad = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrdenItems", x => x.OrdenItemId);
+                    table.ForeignKey(
+                        name: "FK_OrdenItems_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "ItemId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrdenItems_Ordenes_OrdenId",
+                        column: x => x.OrdenId,
+                        principalTable: "Ordenes",
+                        principalColumn: "OrdenId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -279,6 +338,16 @@ namespace ProyectoAplicado1.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrdenItems_ItemId",
+                table: "OrdenItems",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrdenItems_OrdenId",
+                table: "OrdenItems",
+                column: "OrdenId");
         }
 
         /// <inheritdoc />
@@ -312,6 +381,9 @@ namespace ProyectoAplicado1.Migrations
                 name: "Meseros");
 
             migrationBuilder.DropTable(
+                name: "OrdenItems");
+
+            migrationBuilder.DropTable(
                 name: "Postres");
 
             migrationBuilder.DropTable(
@@ -319,6 +391,12 @@ namespace ProyectoAplicado1.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "Ordenes");
         }
     }
 }
