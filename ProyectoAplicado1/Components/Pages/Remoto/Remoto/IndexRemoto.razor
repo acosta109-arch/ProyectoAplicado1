@@ -1,0 +1,224 @@
+﻿@page "/Index/Remoto"
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<a href="/" class="btn custom-login-btn back-button mt-4">
+    <i class="fa-solid fa-right-from-bracket"></i>
+</a>
+<div class="container mt-5" style="font-family: 'Poppins', sans-serif; margin-top: 200px;">
+    <div class="card text-center" style="background-color: #f8f9fa;">
+        <div class="card-header" style="background-color: #FF9F1C; color: white;">
+            <h2 style="font-family: 'Permanent Marker', sans-serif; font-weight: bold;">Bienvenido Administrador</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- Cards pequeños -->
+                <div class="col-md-4 mb-4">
+                    <a href="/Historial" class="small-card">
+                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/manager-3d-icon-download-in-png-blend-fbx-gltf-file-formats--folder-man-files-professional-male-ui-user-essential-pack-interface-icons-8817263.png?f=webp" alt="Elegir Planes" class="img-fluid">
+                        <h5>Historial De Ordenes Delivery</h5>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="#" class="small-card" data-bs-toggle="modal" data-bs-target="#perfilModal">
+                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/perfil-5283577-4413139.png" alt="Perfil" class="img-fluid">
+                        <h5>Perfil</h5>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="/Index/Dietas" class="small-card">
+                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/orden-8176570-6557333.png?f=webp" alt="Mis Citas" class="img-fluid">
+                        <h5>Gestionar Ordenes Delivery</h5>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="/Index/Gestionar" class="small-card">
+                        <img src="https://pixcap.com/cdn/library/template/1726258867139/thumbnail/Motorcycle_3D_Icon_transparent_emp_400.webp" alt="Gestionar Citas" class="img-fluid">
+                        <h5>Gestionar los Deliverys</h5>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="/Create/Citas" class="small-card">
+                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/restauration-rapide-7493762-6154401.png" alt="Mis Dietas" class="img-fluid">
+                        <h5>Disponibilidad de productos</h5>
+                    </a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <a href="/ChatClientes" class="small-card">
+                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/report-3d-icon-download-in-png-blend-fbx-gltf-file-formats--analytics-logo-chart-graph-pack-business-icons-4818086.png?f=webp" alt="Chat Entrenador" class="img-fluid">
+                        <h5>Historial de reportes</h5>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@* Modal para mostrar los datos del perfil del usuario autenticado *@
+<div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="perfilModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content perfil-modal">
+            <div class="modal-header text-center">
+                <h5 class="modal-title" id="perfilModalLabel">Perfil del Usuario</h5>
+            </div>
+            <div class="modal-body text-center">
+                @if (user != null)
+                {
+                    <div class="d-flex justify-content-center align-items-center mb-4">
+                        <i class="fa-solid fa-user me-3"></i> <!-- Icono para el nombre de usuario -->
+                        <p class="text-white fs-6 mb-0"><strong>Nombre de Usuario (Email):</strong> @user.Identity.Name</p>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center mb-4">
+                        <i class="fa-solid fa-shield-alt me-3"></i> <!-- Icono para el rol -->
+                        <p class="text-white fs-6 mb-0"><strong>Rol:</strong> Administrador</p>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-white fs-6">Cargando datos del perfil...</p>
+                }
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<style>
+
+    .card {
+        border-radius: 15px;
+    }
+
+    .small-card {
+        display: block; /* Asegúrate de que el enlace ocupe todo el espacio */
+        background-color: white; /* Fondo blanco para cards pequeños */
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+        height: 150px; /* Altura fija para todos los cards pequeños */
+        text-decoration: none; /* Quitar el subrayado del enlace */
+        color: black; /* Color del texto dentro del enlace */
+    }
+
+        .small-card:hover {
+            transform: scale(1.05); /* Efecto de aumento al pasar el mouse */
+        }
+
+        .small-card img {
+            width: 60px; /* Ancho fijo para todas las imágenes */
+            height: 60px; /* Altura fija para todas las imágenes */
+            object-fit: cover; /* Ajustar imagen para que no se distorsione */
+            margin-bottom: 10px;
+        }
+
+    .custom-login-btn {
+        background-color: red; /* Color personalizado */
+        color: #fff; /* Color del texto en blanco */
+        border: none; /* Sin bordes */
+        border-radius: 50px; /* Bordes redondeados */
+        padding: 8px 20px; /* Espaciado interno */
+        transition: background-color 0.3s ease;
+    }
+
+        .custom-login-btn:hover {
+            background-color: red; /* Color ligeramente más oscuro al pasar el mouse */
+        }
+
+    .back-button {
+        position: absolute;
+        top: 75px;
+        right: 15px;
+        z-index: 10; /* Ensure the button is above other elements */
+    }
+
+    /* Estilos generales para el modal */
+    .perfil-modal {
+        --white: hsl(0, 0%, 100%);
+        --black: hsl(240, 15%, 9%);
+        --paragraph: hsl(0, 0%, 83%);
+        --line: hsl(240, 9%, 17%);
+        --primary: hsl(210, 92%, 58%); /* Azul */
+        font-family: 'Poppins', sans-serif;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 2rem;
+        width: 30rem; /* Aumentar el ancho */
+        background-color: hsla(240, 15%, 9%, 1);
+        background-image: radial-gradient(at 88% 40%, hsla(240, 15%, 9%, 1) 0px, transparent 85%), radial-gradient(at 49% 30%, hsla(240, 15%, 9%, 1) 0px, transparent 85%), radial-gradient(at 14% 26%, hsla(240, 15%, 9%, 1) 0px, transparent 85%), radial-gradient(at 0% 64%, hsla(210, 93%, 56%, 1) 0px, transparent 85%), radial-gradient(at 41% 94%, hsla(210, 80%, 74%, 1) 0px, transparent 85%), radial-gradient(at 100% 99%, hsla(210, 70%, 57%, 1) 0px, transparent 85%);
+        color: var(--white);
+        border-radius: 1rem;
+        box-shadow: 0px -16px 24px 0px rgba(255, 255, 255, 0.25) inset;
+    }
+
+        /* Centrado y espaciado */
+        .perfil-modal .modal-header {
+            border-bottom: 1px solid var(--line);
+            text-align: center;
+        }
+
+        /* Modal body */
+        .perfil-modal .modal-body {
+            padding: 2rem;
+        }
+
+        /* Iconos en el modal */
+        .perfil-modal .d-flex i {
+            font-size: 2rem; /* Aumentar el tamaño de los iconos */
+            color: var(--white);
+        }
+
+        /* Estilo de los textos dentro del modal */
+        .perfil-modal .d-flex p {
+            font-size: 1.5rem; /* Aumentar el tamaño del texto */
+            color: var(--white);
+        }
+
+    /* Botón de cerrar */
+    .btn-close {
+        color: var(--white);
+    }
+
+    /* Estilo del texto "Cargando" */
+    .perfil-modal .modal-body .text-white {
+        font-size: 1.2rem; /* Tamaño de texto */
+    }
+
+    /* Estilo de los botones del modal */
+    .modal-footer .btn {
+        border-radius: 1rem;
+        font-size: 1.2rem; /* Aumentar el tamaño del texto en el botón */
+        padding: 0.5rem 2rem;
+        background-color: var(--primary);
+        color: var(--white);
+        border: none;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Mejorar la apariencia general */
+    .modal-footer {
+        justify-content: center;
+        padding-top: 1rem;
+    }
+
+</style>
+
+@code {
+    private ClaimsPrincipal? user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User;
+    }
+}
+
