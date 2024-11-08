@@ -22,7 +22,7 @@
                     <p class="card-text">@comida.Descripcion</p>
                     <div>
                         <p class="price"><strong>RD$ @comida.Precio</strong></p>
-                        <button class="btn">Detalles</button>
+                        <button class="btn" @onclick=" =>VerDetalles(comida.ItemId)">Detalles</button>
                     </div>
                 </div>
                 <button class=" btn add-to-cart"><i class="bi bi-plus"></i></button>
@@ -37,7 +37,7 @@
                     <p class="card-text">@bebida.Descripcion</p>
                     <div>
                         <p class="price"><strong>RD$ @bebida.Precio</strong></p>
-                        <button class="btn">Detalles</button>
+                        <button class="btn" @onclick=" => VerDetalles(bebida.ItemId)">Detalles</button>
                     </div>
                 </div>
                 <button class="btn add-to-cart"><i class="bi bi-plus"></i></button>
@@ -125,10 +125,10 @@
 </style>
 
 @code {
-    public List<Comidas> comidas = new List<Comidas>();
-    private List<Comidas> comidasFiltradas = new();
-    public List<Bebidas> bebidas = new List<Bebidas>();
-    private List<Bebidas> bebidasFiltradas = new();
+    public List<Item> comidas = new List<Item>();
+    private List<Item> comidasFiltradas = new();
+    public List<Item> bebidas = new List<Item>();
+    private List<Item> bebidasFiltradas = new();
     private string filtro = "";
     private string valorFiltro = "";
     private string tipoSeleccionado = "";
@@ -143,21 +143,8 @@
         AplicarFiltro();
     }
 
-    private void FiltrarPorTipo(ChangeEventArgs e)
+    private void VerDetalles(int itemId)
     {
-        tipoSeleccionado = e.Value?.ToString() ?? "";
-        AplicarFiltro();
-    }
-
-    private void AplicarFiltro()
-    {
-        comidasFiltradas = comidas
-            .Where(b => (string.IsNullOrEmpty(tipoSeleccionado) || b.Descripcion.Contains(tipoSeleccionado, StringComparison.OrdinalIgnoreCase))
-                     && (string.IsNullOrEmpty(busquedaBebidabyNombre) || b.Nombre.Contains(busquedaBebidabyNombre, StringComparison.OrdinalIgnoreCase)))
-            .ToList();
-
-        bebidasFiltradas = bebidas
-        .Where(b => (string.IsNullOrEmpty(tipoBebidaSeleccionado) || b.Tipo.Contains(tipoBebidaSeleccionado, StringComparison.OrdinalIgnoreCase))
-                 && (string.IsNullOrEmpty(busquedaNombre) || b.Nombre.Contains(busquedaNombre, StringComparison.OrdinalIgnoreCase))).ToList();
+        NavigationManager.NavigateTo("$itemdetails/{itemId}");
     }
 }
