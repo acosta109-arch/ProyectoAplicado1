@@ -7,9 +7,9 @@ namespace ProyectoAplicado1.Models
     {
         [Key]
         public int DetalleId { get; set; }
-        public int CobroId { get; set; }
-        public int PrestamoId { get; set; }
-        public double ValorCobrado { get; set; }
+        public int ItemId { get; set; }
+        public int Cantidad { get; set; }
+        public double PrecioActual { get; set; }
         [ForeignKey("CobroId")]
         [InverseProperty("CobrosDetalle")]
         public virtual Orden Orden { get; set; } = null!;
