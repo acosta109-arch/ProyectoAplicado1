@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProyectoAplicado.Models;
 using ProyectoAplicado1.Data;
+using ProyectoAplicado1.Models;
 using System.Linq.Expressions;
 
 namespace ProyectoAplicado.Services;
@@ -78,5 +79,10 @@ public class ComidaServices
                 .FirstOrDefaultAsync();
 
         return comidaExistente == null;
+    }
+
+    public async Task<Item?> ObtenerPorId(int itemId)
+    {
+        return await _contexto.Items.FindAsync(itemId);
     }
 }
