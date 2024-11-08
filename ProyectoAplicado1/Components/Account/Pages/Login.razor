@@ -12,7 +12,6 @@
 
 <PageTitle>Log in</PageTitle>
 
-<h1 class="text-center">Log in</h1>
 <div class="d-flex justify-content-center align-items-center" style="height: 90vh; font-family: 'Poppins', sans-serif;">
     <div class="col-md-6">
         <div class="card shadow-lg" style="background-color: #2EC4B6;">
@@ -120,12 +119,22 @@
             // Redirect based on user's email
             if (Input.Email == "Admin@gmail.com")
             {
-                NavigationManager.NavigateTo("/Index/Admin");
+                NavigationManager.NavigateTo("/Index/Administrador");
             }
-            else if (Input.Email == "Cliente123@gmail.com")
+            else if (Input.Email == "Local@gmail.com")
             {
+                NavigationManager.NavigateTo("/Index/Local");
+            }
+            else if (Input.Email == "Remoto@gmail.com")
+            {
+                NavigationManager.NavigateTo("/Index/Remoto");
+            }
+            else
+            {
+                // Redirigir todos los demás usuarios al index de Cliente
                 NavigationManager.NavigateTo("/Index/Cliente");
             }
+
         }
         else if (result.RequiresTwoFactor)
         {
