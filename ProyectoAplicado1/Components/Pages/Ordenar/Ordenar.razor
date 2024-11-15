@@ -1,0 +1,226 @@
+﻿@page "/Create/Ordenes"
+@rendermode InteractiveServer
+@inject OrdenesServices ordenesService
+@inject DetalleItemsServices itemsService
+@inject NavigationManager navigation
+
+<PageTitle>Añadir nueva orden</PageTitle>
+<EditForm Model="orden" OnValidSubmit="Crear">
+    <DataAnnotationsValidator />
+    <div class="container mt-5 pt-5">
+        <div class="card shadow-lg">
+            <div class="card-header" style="background-color: #FF9F1C; color: white;">
+                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Añadir nueva orden</strong></h2>
+            </div>
+
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label" for="nombreCliente" style="font-family: 'Poppins', sans-serif;"><strong>Nombre del Cliente</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <InputText id="nombreCliente" class="form-control" @bind-Value="orden.NombreCliente" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => orden.NombreCliente)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="mesa" style="font-family: 'Poppins', sans-serif;"><strong>Mesa</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-table"></i>
+                        </span>
+                        <select id="mesa" class="form-control" @bind="orden.Mesa" style="border: 1px solid gray;">
+                            <option value="">Seleccione una mesa</option>
+                            <option value="1">Mesa 1</option>
+                            <option value="2">Mesa 2</option>
+                            <option value="3">Mesa 3</option>
+                            <option value="4">Mesa 4</option>
+                            <option value="5">Mesa 5</option>
+                        </select>
+                    </div>
+                    <ValidationMessage For="@(() => orden.Mesa)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="metodoPago" style="font-family: 'Poppins', sans-serif;"><strong>Método de Pago</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-money-bill-wave"></i>
+                        </span>
+                        <select id="metodoPago" class="form-control" @bind="orden.MetodoPago" style="border: 1px solid gray;">
+                            <option value="">Seleccione un método de pago</option>
+                            <option value="efectivo">Efectivo</option>
+                            <option value="tarjeta">Tarjeta de Crédito</option>
+                        </select>
+                    </div>
+                    <ValidationMessage For="@(() => orden.MetodoPago)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="detalleItems" style="font-family: 'Poppins', sans-serif;">
+                        <strong>Items de la orden</strong>
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-box"></i>
+                        </span>
+                        <select id="detalleItems" class="form-control" @bind="selectedItemId" style="border: 1px solid gray;">
+                            <option value="">Seleccione un ítem</option>
+                            @foreach (var item in allItems)
+                            {
+                                <option value="@item.DetalleItemId" data-img="@item">
+                                    @item.Nombre
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <ValidationMessage For="@(() => selectedItemId)"></ValidationMessage>
+                    <button type="button" class="btn btn-primary mt-2" @onclick="AgregarItem">Añadir ítem</button>
+                </div>
+
+                @* Display selected items *@
+                <div class="mb-3">
+                    <label class="form-label" for="itemsSeleccionados" style="font-family: 'Poppins', sans-serif;"><strong>Ítems seleccionados</strong></label>
+                    <ul>
+                        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+                            @foreach (var item in orden.DetalleItems)
+                            {
+                                <div class="col">
+                                    <div class="card" style="width: 18rem;">
+                                        <img src="@item.FotoURL" class="card-img-top" alt="@item.Nombre" style="height: 150px; object-fit: cover;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">@item.Nombre</h5>
+                                            <p class="card-text">$RD @item.Precio</p>
+                                            <button class="btn btn-danger" @onclick="() => RemoveItem(item.DetalleItemId)">Remover Item</button>
+                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#itemModal-@item.DetalleItemId">Ver más información</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="itemModal-@item.DetalleItemId" tabindex="-1" aria-labelledby="itemModalLabel-@item.DetalleItemId" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="itemModalLabel-@item.DetalleItemId">@item.Nombre</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p><strong>Descripción:</strong></p>
+                                                    <p>@item.Descripcion</p> <!-- Aquí va la descripción del ítem -->
+                                                    <p><strong>Precio:</strong> $RD @item.Precio</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </ul>
+                </div>
+
+                @* Display quantity and total *@
+                <div class="mb-3">
+                    <label class="form-label" style="font-family: 'Poppins', sans-serif;"><strong>Cantidad y Total</strong></label>
+                    <div>
+                        <p><strong>Cantidad de ítems:</strong> @orden.Cantidad</p>
+                        <p><strong>Total:</strong> @orden.Total</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-footer">
+                <button type="button" class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                    <i class="fa-solid fa-backward"></i> Volver
+                </button>
+                <button type="submit" class="btn" style="background-color: #FF9F1C; color: white;">
+                    <i class="fa-solid fa-share-from-square"></i> Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+<style>
+    .gray-border {
+        border: 1px solid gray;
+    }
+</style>
+
+@code {
+    public Ordenes orden { get; set; } = new Ordenes();
+    public int selectedItemId { get; set; }
+    public List<DetalleItems> allItems { get; set; } = new List<DetalleItems>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Cargar los ítems disponibles para el select
+        allItems = await itemsService.GetAllItems();
+    }
+
+    public async Task Crear()
+    {
+        // Calcular cantidad y total antes de guardar
+        ActualizarCantidadYTotal();
+
+        // Guardar la orden
+        await ordenesService.Guardar(orden);
+
+        // Limpiar la orden y redirigir
+        orden = new Ordenes();
+        Volver();
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Index/Ordenes");
+    }
+
+    public void AgregarItem()
+    {
+        // Buscar el ítem seleccionado por ID
+        var itemSeleccionado = allItems.FirstOrDefault(item => item.DetalleItemId == selectedItemId);
+        if (itemSeleccionado != null)
+        {
+            orden.DetalleItems.Add(itemSeleccionado);
+            // Recalcular cantidad y total después de agregar el ítem
+            ActualizarCantidadYTotal();
+        }
+    }
+
+    public void ActualizarCantidadYTotal()
+    {
+        // Calcular la cantidad de ítems y el total
+        orden.Cantidad = orden.DetalleItems.Count;
+        orden.Total = CalcularTotal();
+    }
+
+    public decimal CalcularTotal()
+    {
+        // Calcular el total sumando el precio de todos los ítems seleccionados
+        decimal total = 0;
+        foreach (var item in orden.DetalleItems)
+        {
+            total += item.Precio;  // Suponiendo que 'Precio' es el precio del ítem
+        }
+        return total;
+    }
+
+    // Método para remover un item
+    private void RemoveItem(int itemId)
+    {
+        var itemToRemove = orden.DetalleItems.FirstOrDefault(i => i.DetalleItemId == itemId);
+        if (itemToRemove != null)
+        {
+            orden.DetalleItems.Remove(itemToRemove);
+        }
+
+        // Llamar a StateHasChanged para actualizar la UI
+        StateHasChanged();
+    }
+}
