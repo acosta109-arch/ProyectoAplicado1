@@ -11,7 +11,7 @@ using ProyectoAplicado1.Data;
 namespace ProyectoAplicado1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241108145054_Inicial")]
+    [Migration("20241115174359_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -372,6 +372,49 @@ namespace ProyectoAplicado1.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("ProyectoAplicado1.Models.DetalleItems", b =>
+                {
+                    b.Property<int>("DetalleItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FotoURL")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("OrdenId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("OrdenesDeliveryOrdenId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("OrdenesOrdenId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("DetalleItemId");
+
+                    b.HasIndex("OrdenesDeliveryOrdenId");
+
+                    b.HasIndex("OrdenesOrdenId");
+
+                    b.ToTable("DetalleItems");
+                });
+
             modelBuilder.Entity("ProyectoAplicado1.Models.Items", b =>
                 {
                     b.Property<int>("ItemId")
@@ -408,11 +451,19 @@ namespace ProyectoAplicado1.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Cliente")
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Mesa")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("Fecha")
+                    b.Property<string>("MetodoPago")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NombreCliente")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("Total")
@@ -423,28 +474,37 @@ namespace ProyectoAplicado1.Migrations
                     b.ToTable("Ordenes");
                 });
 
-            modelBuilder.Entity("ProyectoAplicado1.Models.OrderItem", b =>
+            modelBuilder.Entity("ProyectoAplicado1.Models.OrdenesDelivery", b =>
                 {
-                    b.Property<int>("OrdenItemId")
+                    b.Property<int>("OrdenId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Cantidad")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ItemId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Delivery")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("OrdenId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.HasKey("OrdenItemId");
+                    b.Property<string>("MetodoPago")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.HasIndex("ItemId");
+                    b.Property<string>("NombreCliente")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.HasIndex("OrdenId");
+                    b.Property<decimal>("Total")
+                        .HasColumnType("TEXT");
 
-                    b.ToTable("OrdenItems");
+                    b.HasKey("OrdenId");
+
+                    b.ToTable("OrdenesDelivery");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -498,33 +558,25 @@ namespace ProyectoAplicado1.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProyectoAplicado1.Models.OrderItem", b =>
+            modelBuilder.Entity("ProyectoAplicado1.Models.DetalleItems", b =>
                 {
-                    b.HasOne("ProyectoAplicado1.Models.Items", "Item")
-                        .WithMany("OrdenItems")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("ProyectoAplicado1.Models.OrdenesDelivery", null)
+                        .WithMany("DetalleItems")
+                        .HasForeignKey("OrdenesDeliveryOrdenId");
 
-                    b.HasOne("ProyectoAplicado1.Models.Ordenes", "Orden")
-                        .WithMany("OrdenItems")
-                        .HasForeignKey("OrdenId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-
-                    b.Navigation("Orden");
-                });
-
-            modelBuilder.Entity("ProyectoAplicado1.Models.Items", b =>
-                {
-                    b.Navigation("OrdenItems");
+                    b.HasOne("ProyectoAplicado1.Models.Ordenes", null)
+                        .WithMany("DetalleItems")
+                        .HasForeignKey("OrdenesOrdenId");
                 });
 
             modelBuilder.Entity("ProyectoAplicado1.Models.Ordenes", b =>
                 {
-                    b.Navigation("OrdenItems");
+                    b.Navigation("DetalleItems");
+                });
+
+            modelBuilder.Entity("ProyectoAplicado1.Models.OrdenesDelivery", b =>
+                {
+                    b.Navigation("DetalleItems");
                 });
 #pragma warning restore 612, 618
         }

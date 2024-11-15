@@ -142,13 +142,33 @@ namespace ProyectoAplicado1.Migrations
                 {
                     OrdenId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Fecha = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Cliente = table.Column<string>(type: "TEXT", nullable: false),
+                    NombreCliente = table.Column<string>(type: "TEXT", nullable: false),
+                    Mesa = table.Column<string>(type: "TEXT", nullable: false),
+                    MetodoPago = table.Column<string>(type: "TEXT", nullable: false),
+                    Cantidad = table.Column<int>(type: "INTEGER", nullable: false),
                     Total = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ordenes", x => x.OrdenId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrdenesDelivery",
+                columns: table => new
+                {
+                    OrdenId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NombreCliente = table.Column<string>(type: "TEXT", nullable: false),
+                    Direccion = table.Column<string>(type: "TEXT", nullable: false),
+                    Delivery = table.Column<string>(type: "TEXT", nullable: false),
+                    MetodoPago = table.Column<string>(type: "TEXT", nullable: false),
+                    Cantidad = table.Column<int>(type: "INTEGER", nullable: false),
+                    Total = table.Column<decimal>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrdenesDelivery", x => x.OrdenId);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,30 +296,33 @@ namespace ProyectoAplicado1.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrdenItems",
+                name: "DetalleItems",
                 columns: table => new
                 {
-                    OrdenItemId = table.Column<int>(type: "INTEGER", nullable: false)
+                    DetalleItemId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: false),
+                    Descripcion = table.Column<string>(type: "TEXT", nullable: false),
+                    Tipo = table.Column<string>(type: "TEXT", nullable: false),
+                    Precio = table.Column<decimal>(type: "TEXT", nullable: false),
+                    FotoURL = table.Column<string>(type: "TEXT", nullable: false),
                     OrdenId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ItemId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Cantidad = table.Column<int>(type: "INTEGER", nullable: false)
+                    OrdenesDeliveryOrdenId = table.Column<int>(type: "INTEGER", nullable: true),
+                    OrdenesOrdenId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrdenItems", x => x.OrdenItemId);
+                    table.PrimaryKey("PK_DetalleItems", x => x.DetalleItemId);
                     table.ForeignKey(
-                        name: "FK_OrdenItems_Items_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Items",
-                        principalColumn: "ItemId",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_DetalleItems_OrdenesDelivery_OrdenesDeliveryOrdenId",
+                        column: x => x.OrdenesDeliveryOrdenId,
+                        principalTable: "OrdenesDelivery",
+                        principalColumn: "OrdenId");
                     table.ForeignKey(
-                        name: "FK_OrdenItems_Ordenes_OrdenId",
-                        column: x => x.OrdenId,
+                        name: "FK_DetalleItems_Ordenes_OrdenesOrdenId",
+                        column: x => x.OrdenesOrdenId,
                         principalTable: "Ordenes",
-                        principalColumn: "OrdenId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "OrdenId");
                 });
 
             migrationBuilder.CreateIndex(
@@ -340,14 +363,14 @@ namespace ProyectoAplicado1.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrdenItems_ItemId",
-                table: "OrdenItems",
-                column: "ItemId");
+                name: "IX_DetalleItems_OrdenesDeliveryOrdenId",
+                table: "DetalleItems",
+                column: "OrdenesDeliveryOrdenId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrdenItems_OrdenId",
-                table: "OrdenItems",
-                column: "OrdenId");
+                name: "IX_DetalleItems_OrdenesOrdenId",
+                table: "DetalleItems",
+                column: "OrdenesOrdenId");
         }
 
         /// <inheritdoc />
@@ -378,10 +401,13 @@ namespace ProyectoAplicado1.Migrations
                 name: "Comidas");
 
             migrationBuilder.DropTable(
-                name: "Meseros");
+                name: "DetalleItems");
 
             migrationBuilder.DropTable(
-                name: "OrdenItems");
+                name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "Meseros");
 
             migrationBuilder.DropTable(
                 name: "Postres");
@@ -393,7 +419,7 @@ namespace ProyectoAplicado1.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Items");
+                name: "OrdenesDelivery");
 
             migrationBuilder.DropTable(
                 name: "Ordenes");
