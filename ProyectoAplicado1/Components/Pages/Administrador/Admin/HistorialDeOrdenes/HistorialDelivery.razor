@@ -1,6 +1,6 @@
 ﻿@page "/Historial/Delivery"
 @rendermode InteractiveServer
-@inject OrdenesServices ordenesService
+@inject OrdenesDeliveryServices ordenesService
 @inject NavigationManager navigation
 
 <PageTitle>Inicio Órdenes</PageTitle>
@@ -109,9 +109,9 @@
 </div>
 
 @code {
-    public List<Ordenes> ordenes = new List<Ordenes>();
+    public List<OrdenesDelivery> ordenes = new List<OrdenesDelivery>();
     private string busquedaCliente = "";
-    private List<Ordenes> ordenesFiltradas = new();
+    private List<OrdenesDelivery> ordenesFiltradas = new();
 
     protected override async Task OnInitializedAsync()
     {
