@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProyectoAplicado1.Models;
 
-public class Items
+public class DetalleItems
 {
     [Key]
-    public int ItemId { get; set; }
+    public int DetalleItemId { get; set; }
 
     [Required(ErrorMessage = "El nombre es obligatorio")]
     [RegularExpression(@"^[a-zA-Z\s]*$", ErrorMessage = "El nombre solo puede contener letras y espacios")]
@@ -26,4 +27,6 @@ public class Items
     [Required(ErrorMessage = "La foto es obligatoria.")]
     public string FotoURL { get; set; }
 
+    [ForeignKey("OrdenId")]
+    public int OrdenId { get; set; }
 }

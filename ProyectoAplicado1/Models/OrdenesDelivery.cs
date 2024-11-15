@@ -2,14 +2,16 @@
 
 namespace ProyectoAplicado1.Models;
 
-public class Ordenes
+public class OrdenesDelivery
 {
     [Key]
     public int OrdenId { get; set; }
 
     public string NombreCliente { get; set; }
 
-    public string Mesa { get; set; }
+    public string Direccion { get; set; }
+
+    public string Delivery { get; set; }
 
     public ICollection<DetalleItems> DetalleItems { get; set; } = new List<DetalleItems>();
 
