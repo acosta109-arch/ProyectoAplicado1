@@ -77,4 +77,14 @@ public class ItemsService
             .Where(criterio)
             .ToListAsync();
     }
+
+    public async Task<Items> ValidarItemUnico(int itemId, string nombre, string descripcion)
+    {
+        // Buscar un ítem que tenga el mismo nombre o descripción
+        var itemExistente = await _contexto.Items
+            .Where(i => (i.Nombre == nombre || i.Descripcion == descripcion) && i.ItemId != itemId)
+            .FirstOrDefaultAsync();
+
+        return itemExistente; // Si es null, el ítem es único
+    }
 }

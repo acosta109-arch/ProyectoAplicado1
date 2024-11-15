@@ -14,60 +14,70 @@ public class OrdenesServices
         _contexto = contexto;
     }
 
-    // Método Existe
-    public async Task<bool> Existe(int ordenId)
+    public async Task<bool> Existe(int id)
     {
-        return await _contexto.Ordenes.AnyAsync(o => o.OrdenId == ordenId);
+        return await _contexto.Ordenes.AnyAsync(o => o.OrdenId == id);
     }
 
-    // Método Insertar
     private async Task<bool> Insertar(Ordenes orden)
     {
         _contexto.Ordenes.Add(orden);
         return await _contexto.SaveChangesAsync() > 0;
     }
 
-    // Método Modificar
-    public async Task<bool> Modificar(Ordenes orden)
+    private async Task<bool> Modificar(Ordenes orden)
     {
         _contexto.Ordenes.Update(orden);
         return await _contexto.SaveChangesAsync() > 0;
     }
 
-    // Método Guardar
     public async Task<bool> Guardar(Ordenes orden)
     {
-        if (!await Existe(orden.OrdenId))
+        if (orden.OrdenId == 0)
             return await Insertar(orden);
         else
             return await Modificar(orden);
     }
 
-    // Método Eliminar
-    public async Task<bool> Eliminar(int ordenId)
+    public async Task<bool> Eliminar(int id)
     {
-        var eliminado = await _contexto.Ordenes
-            .Where(o => o.OrdenId == ordenId)
-            .ExecuteDeleteAsync();
-        return eliminado > 0;
+        var orden = await _contexto.Ordenes.FindAsync(id);
+        if (orden != null)
+        {
+            _contexto.Ordenes.Remove(orden);
+            return await _contexto.SaveChangesAsync() > 0;
+        }
+        return false;
     }
 
-    // Método Buscar
-    public async Task<Ordenes?> Buscar(int ordenId)
+    public async Task<Ordenes?> Buscar(int id)
     {
         return await _contexto.Ordenes
-            .AsNoTracking()
-            .Include(o => o.OrdenItems) // Incluye los items de la orden
-            .FirstOrDefaultAsync(o => o.OrdenId == ordenId);
+            .Include(o => o.DetalleItems)  // Incluyendo los detalles de la orden
+            .FirstOrDefaultAsync(o => o.OrdenId == id);
     }
 
-    // Método Listar
     public async Task<List<Ordenes>> Listar(Expression<Func<Ordenes, bool>> criterio)
     {
-        return await _contexto.Ordenes
-            .AsNoTracking()
+        return await _contexto.Ordenes.AsNoTracking()
             .Where(criterio)
-            .Include(o => o.OrdenItems) // Incluye los items de la orden
             .ToListAsync();
+    }
+
+    public async Task<List<Ordenes>> ListarOrdenes()
+    {
+        return await _contexto.Ordenes.AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task<int> ObtenerCantidadOrdenesAsync()
+    {
+        return await _contexto.Ordenes.CountAsync();
+    }
+
+    public async Task<bool> OrdenExiste(string nombreCliente, string mesa)
+    {
+        return await _contexto.Ordenes
+            .AnyAsync(o => o.NombreCliente == nombreCliente || o.Mesa == mesa);
     }
 }
