@@ -89,7 +89,8 @@ namespace ProyectoAplicado1
             builder.Services.AddScoped<CarritoService>();
             builder.Services.AddScoped<ItemsService>();
             builder.Services.AddScoped<OrdenesServices>();
-            builder.Services.AddScoped<OrdenItemServices>();
+            builder.Services.AddScoped<DetalleItemsServices>();
+            builder.Services.AddScoped<OrdenesDeliveryServices>();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

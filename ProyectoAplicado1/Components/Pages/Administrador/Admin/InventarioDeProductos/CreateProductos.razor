@@ -1,5 +1,127 @@
-﻿<h3>CreateProductos</h3>
+﻿@page "/Create/Items"
+@rendermode InteractiveServer
+@inject DetalleItemsServices itemsService
+@inject NavigationManager navigation
+
+<PageTitle>Añadir nuevo ítem</PageTitle>
+<EditForm Model="items" OnValidSubmit="Crear">
+    <DataAnnotationsValidator />
+    <div class="container mt-5 pt-5">
+        <div class="card shadow-lg">
+            @*Header*@
+            <div class="card-header" style="background-color: #FF9F1C; color: white;">
+                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Añadir nuevo ítem</strong></h2>
+            </div>
+            @*Body*@
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label" for="nombres" style="font-family: 'Poppins', sans-serif;"><strong>Nombre del ítem</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </span>
+                        <InputText id="nombres" class="form-control" @bind-Value="items.Nombre" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => items.Nombre)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="descripcion" style="font-family: 'Poppins', sans-serif;"><strong>Descripción del ítem</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </span>
+                        <InputText id="descripcion" class="form-control" @bind-Value="items.Descripcion" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => items.Descripcion)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="tipoItem" style="font-family: 'Poppins', sans-serif;"><strong>Tipo de ítem</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </span>
+                        <InputSelect id="tipoItem" class="form-control" @bind-Value="items.Tipo" style="border: 1px solid gray;">
+                            <option value="">Seleccione un tipo</option>
+                            <option value="Bebidas">Bebidas</option>
+                            <option value="Comidas">Comidas</option>
+                            <option value="Postres">Postres</option>
+                        </InputSelect>
+                    </div>
+                    <ValidationMessage For="@(() => items.Tipo)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="precio" style="font-family: 'Poppins', sans-serif;"><strong>Precio del ítem</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fas fa-dollar-sign"></i>
+                        </span>
+                        <InputNumber id="precio" class="form-control" @bind-Value="items.Precio" style="border: 1px solid gray;"></InputNumber>
+                    </div>
+                    <ValidationMessage For="@(() => items.Precio)"></ValidationMessage>
+                </div>
+
+
+                <div class="mb-3">
+                    <label class="form-label" for="fotoURL" style="font-family: 'Poppins', sans-serif;"><strong>Url de la imagen del ítem</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fas fa-image"></i>
+                        </span>
+                        <InputText id="fotoURL" class="form-control" @bind-Value="items.FotoURL" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => items.FotoURL)"></ValidationMessage>
+                </div>
+            </div>
+
+            @*Footer*@
+            <div class="card-footer">
+                <button type="button" class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                    <i class="fa-solid fa-backward"></i> Volver
+                </button>
+                <button type="submit" class="btn" style="background-color: #FF9F1C; color: white;">
+                    <i class="fa-solid fa-share-from-square"></i> Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+<style>
+    .gray-border {
+        border: 1px solid gray;
+    }
+</style>
 
 @code {
+    public DetalleItems items { get; set; } = new DetalleItems();
+    public bool NombreRepetido { get; set; }
 
+    public async Task<bool> Validar()
+    {
+        var existeItem = await itemsService.ValidarDetalleItemUnico(items.DetalleItemId, items.Nombre, items.Descripcion);
+        return existeItem == null;
+    }
+
+    public async Task Crear()
+    {
+        if (await Validar()) // Cambiado a validar positivamente
+        {
+            await itemsService.Guardar(items);
+            items = new DetalleItems();
+            Volver();
+        }
+        else
+        {
+            // Si el nombre ya existe, muestra un mensaje o toma otra acción
+            NombreRepetido = true;
+        }
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Index/Items");
+    }
 }

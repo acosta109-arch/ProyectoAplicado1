@@ -1,5 +1,69 @@
-﻿<h3>DeleteProductos</h3>
+﻿@page "/Items/Delete/{itemId:int}"
+@rendermode InteractiveServer
+@inject ItemsService itemsServices
+@inject NavigationManager navigation
+
+<PageTitle>Eliminar Item</PageTitle>
+
+<div class="container mt-5 pt-5">
+    <div class="card shadow-lg">
+        <!-- Header -->
+        <div class="card-header" style="background-color: #FF9F1C; color: white;">
+            <h2 style="font-family: 'Poppins', sans-serif;"><strong>Eliminar Item</strong></h2>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <div class="text-center mb-4">
+                @if (!string.IsNullOrEmpty(items?.FotoURL))
+                {
+                    <img src="@items.FotoURL" alt="Imagen del item" class="img-fluid" style="width: 150px; height: 150px; object-fit: cover; border-radius: 10px;">
+                }
+            </div>
+            <div class="mb-3">
+                <strong>Nombre del item:</strong> @items?.Nombre
+            </div>
+            <div class="mb-3">
+                <strong>Descripción:</strong> @items?.Descripcion
+            </div>
+            <div class="mb-3">
+                <strong>Tipo de item:</strong> @items?.Tipo
+            </div>
+            <div class="mb-3">
+                <strong>Precio:</strong> @items?.Precio
+            </div>
+        </div>
+
+
+        <!-- Footer -->
+        <div class="card-footer text-left">
+            <button class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                <i class="fa-solid fa-backward"></i> Volver
+            </button>
+            <button class="btn btn-danger" @onclick="ConfirmarEliminar">
+                <i class="fa-solid fa-trash"></i> Confirmar Eliminación
+            </button>
+        </div>
+    </div>
+</div>
 
 @code {
+    [Parameter] public int itemId { get; set; }
+    private Items? items;
 
+    protected override async Task OnInitializedAsync()
+    {
+        items = await itemsServices.Buscar(itemId);
+    }
+
+    private void Volver() => navigation.NavigateTo("/Index/Items");
+
+    private async Task ConfirmarEliminar()
+    {
+        if (items != null)
+        {
+            await itemsServices.Eliminar(itemId);
+            navigation.NavigateTo("/Index/Items");
+        }
+    }
 }
