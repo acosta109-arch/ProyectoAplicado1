@@ -1,0 +1,68 @@
+﻿@page "/Cocineros/Delete/{cocineroId:int}"
+@rendermode InteractiveServer
+@inject CocineroServices cocineroServices
+@inject NavigationManager navigation
+
+<PageTitle>Eliminar Cocinero</PageTitle>
+
+<div class="container mt-5 pt-5">
+    <div class="card shadow-lg">
+        <!-- Header -->
+        <div class="card-header" style="background-color: #FF9F1C; color: white;">
+            <h2 style="font-family: 'Poppins', sans-serif;"><strong>Eliminar Cocinero</strong></h2>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <div class="text-center mb-4">
+                @if (!string.IsNullOrEmpty(cocinero?.FotoURL))
+                {
+                    <img src="@cocinero.FotoURL" alt="Imagen de cocinero" class="img-fluid" style="max-width: 250px; border-radius: 10px;">
+                }
+            </div>
+            <div class="mb-3">
+                <strong>Nombre Completo:</strong> @cocinero?.NombreCompleto
+            </div>
+            <div class="mb-3">
+                <strong>Especialidad:</strong> @cocinero?.Especialidad
+            </div>
+            <div class="mb-3">
+                <strong>Teléfono:</strong> @cocinero?.Telefono
+            </div>
+            <div class="mb-3">
+                <strong>Estado:</strong> @cocinero?.Estado
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer text-center">
+            <button class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                <i class="fa-solid fa-backward"></i> Volver
+            </button>
+            <button class="btn btn-danger" @onclick="ConfirmarEliminar">
+                <i class="fa-solid fa-trash"></i> Confirmar Eliminación
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int cocineroId { get; set; }
+    private Cocineros? cocinero;
+
+    protected override async Task OnInitializedAsync()
+    {
+        cocinero = await cocineroServices.Buscar(cocineroId);
+    }
+
+    private void Volver() => navigation.NavigateTo("/Index/Cocineros");
+
+    private async Task ConfirmarEliminar()
+    {
+        if (cocinero != null)
+        {
+            await cocineroServices.Eliminar(cocineroId);
+            navigation.NavigateTo("/Index/Cocineros");
+        }
+    }
+}

@@ -1,0 +1,124 @@
+﻿@page "/Create/Cocineros"
+@rendermode InteractiveServer
+@inject CocineroServices cocineroServices
+@inject NavigationManager navigation
+
+<PageTitle>Añadir nuevo cocinero</PageTitle>
+<EditForm Model="cocinero" OnValidSubmit="Crear">
+    <DataAnnotationsValidator />
+    <div class="container mt-5 pt-5">
+        <div class="card shadow-lg">
+            @* Header *@
+            <div class="card-header" style="background-color: #FF9F1C; color: white;">
+                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Añadir nuevo cocinero</strong></h2>
+            </div>
+
+            @* Body *@
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label" for="nombreCompleto" style="font-family: 'Poppins', sans-serif;"><strong>Nombre Completo</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </span>
+                        <InputText id="nombreCompleto" class="form-control" @bind-Value="cocinero.NombreCompleto" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => cocinero.NombreCompleto)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="especialidad" style="font-family: 'Poppins', sans-serif;"><strong>Especialidad</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </span>
+                        <InputSelect id="especialidad" class="form-control" @bind-Value="cocinero.Especialidad" style="border: 1px solid gray;">
+                            <option value="">Seleccione una especialidad</option>
+                            <option value="Pasteleria">Pasteleria</option>
+                            <option value="Gastronomia">Gastronomia</option>
+                            <option value="Vegetariana">Vegetariana</option>
+                        </InputSelect>
+                    </div>
+                    <ValidationMessage For="@(() => cocinero.Especialidad)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="telefono" style="font-family: 'Poppins', sans-serif;"><strong>Teléfono</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-phone"></i>
+                        </span>
+                        <InputText id="telefono" class="form-control" @bind-Value="cocinero.Telefono" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => cocinero.Telefono)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="estado" style="font-family: 'Poppins', sans-serif;"><strong>Estado</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fas fa-check-circle"></i>
+                        </span>
+                        <InputSelect id="estado" class="form-control" @bind-Value="cocinero.Estado" style="border: 1px solid gray;">
+                            <option value="">Seleccione el estado</option>
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </InputSelect>
+                    </div>
+                    <ValidationMessage For="@(() => cocinero.Estado)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="fotoURL" style="font-family: 'Poppins', sans-serif;"><strong>Url de la foto</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fas fa-image"></i>
+                        </span>
+                        <InputText id="fotoURL" class="form-control" @bind-Value="cocinero.FotoURL" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => cocinero.FotoURL)"></ValidationMessage>
+                </div>
+            </div>
+
+            @* Footer *@
+            <div class="card-footer">
+                <button type="button" class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                    <i class="fa-solid fa-backward"></i> Volver
+                </button>
+                <button type="submit" class="btn" style="background-color: #FF9F1C; color: white;">
+                    <i class="fa-solid fa-share-from-square"></i> Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+<style>
+    .gray-border {
+        border: 1px solid gray;
+    }
+</style>
+
+@code {
+    public Cocineros cocinero { get; set; } = new Cocineros();
+
+    public async Task Crear()
+    {
+        if (await Validar())
+        {
+            await cocineroServices.Guardar(cocinero);
+            cocinero = new Cocineros();
+            Volver();
+        }
+    }
+
+    public async Task<bool> Validar()
+    {
+        return await cocineroServices.ValidarCocineroUnico(cocinero.CocineroId, cocinero.NombreCompleto, cocinero.Telefono);
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Index/Cocineros");
+    }
+}
