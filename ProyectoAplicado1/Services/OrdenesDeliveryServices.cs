@@ -25,7 +25,7 @@ public class OrdenesDeliveryServices
         return await _contexto.SaveChangesAsync() > 0;
     }
 
-    private async Task<bool> Modificar(OrdenesDelivery ordenDelivery)
+    public async Task<bool> Modificar(OrdenesDelivery ordenDelivery)
     {
         _contexto.OrdenesDelivery.Update(ordenDelivery);
         return await _contexto.SaveChangesAsync() > 0;

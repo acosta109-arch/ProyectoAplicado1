@@ -25,7 +25,7 @@ public class OrdenesServices
         return await _contexto.SaveChangesAsync() > 0;
     }
 
-    private async Task<bool> Modificar(Ordenes orden)
+    public async Task<bool> Modificar(Ordenes orden)
     {
         _contexto.Ordenes.Update(orden);
         return await _contexto.SaveChangesAsync() > 0;
@@ -79,5 +79,12 @@ public class OrdenesServices
     {
         return await _contexto.Ordenes
             .AnyAsync(o => o.NombreCliente == nombreCliente || o.Mesa == mesa);
+    }
+
+    public async Task<Ordenes> GetOrdenById(int id)
+    {
+        return await _contexto.Ordenes
+            .Include(o => o.DetalleItems) // Incluye los ítems relacionados
+            .FirstOrDefaultAsync(o => o.OrdenId == id);
     }
 }
