@@ -1,0 +1,62 @@
+﻿@page "/OrdenesAqui/Delete/{ordenId:int}"
+@rendermode InteractiveServer
+@inject OrdenesServices ordenesServices
+@inject NavigationManager navigation
+
+<PageTitle>Eliminar Orden</PageTitle>
+
+<div class="container mt-5 pt-5">
+    <div class="card shadow-lg">
+        <!-- Header -->
+        <div class="card-header" style="background-color: #FF9F1C; color: white;">
+            <h2 style="font-family: 'Poppins', sans-serif;"><strong>Eliminar Orden</strong></h2>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <div class="mb-3">
+                <strong>ID de la Orden:</strong> @orden?.OrdenId
+            </div>
+            <div class="mb-3">
+                <strong>Cliente:</strong> @orden?.NombreCliente
+            </div>
+            <div class="mb-3">
+                <strong>Fecha:</strong> @orden?.Mesa
+            </div>
+            <div class="mb-3">
+                <strong>Estado:</strong> @orden?.MetodoPago
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer text-left">
+            <button class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                <i class="fa-solid fa-backward"></i> Volver
+            </button>
+            <button class="btn btn-danger" @onclick="ConfirmarEliminar">
+                <i class="fa-solid fa-trash"></i> Confirmar Eliminación
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int ordenId { get; set; }
+    private Ordenes? orden;
+
+    protected override async Task OnInitializedAsync()
+    {
+        orden = await ordenesServices.Buscar(ordenId);
+    }
+
+    private void Volver() => navigation.NavigateTo("/Index/OrdenesAqui");
+
+    private async Task ConfirmarEliminar()
+    {
+        if (orden != null)
+        {
+            await ordenesServices.Eliminar(ordenId);
+            navigation.NavigateTo("/Index/OrdenesAqui");
+        }
+    }
+}
