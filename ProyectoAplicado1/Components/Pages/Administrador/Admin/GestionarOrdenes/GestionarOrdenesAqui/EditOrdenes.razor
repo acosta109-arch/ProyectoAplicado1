@@ -1,0 +1,95 @@
+﻿@page "/Ordenes/Edit/{ordenId:int}"
+@rendermode InteractiveServer
+@inject OrdenesServices ordenesServices
+@inject NavigationManager navigation
+
+<PageTitle>Editar Orden</PageTitle>
+
+<EditForm Model="orden" OnValidSubmit="Actualizar">
+    <DataAnnotationsValidator />
+    <div class="container mt-5 pt-5">
+        <div class="card shadow-lg">
+            <div class="card-header" style="background-color: #FF9F1C; color: white;">
+                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Editar orden</strong></h2>
+            </div>
+
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label" for="nombreCliente" style="font-family: 'Poppins', sans-serif;"><strong>Nombre del Cliente</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <InputText id="nombreCliente" class="form-control" @bind-Value="orden.NombreCliente" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => orden.NombreCliente)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="mesa" style="font-family: 'Poppins', sans-serif;"><strong>Mesa</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-table"></i>
+                        </span>
+                        <select id="mesa" class="form-control" @bind="orden.Mesa" style="border: 1px solid gray;">
+                            <option value="">Seleccione una mesa</option>
+                            <option value="1">Mesa 1</option>
+                            <option value="2">Mesa 2</option>
+                            <option value="3">Mesa 3</option>
+                            <option value="4">Mesa 4</option>
+                            <option value="5">Mesa 5</option>
+                        </select>
+                    </div>
+                    <ValidationMessage For="@(() => orden.Mesa)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="metodoPago" style="font-family: 'Poppins', sans-serif;"><strong>Método de Pago</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-money-bill-wave"></i>
+                        </span>
+                        <select id="metodoPago" class="form-control" @bind="orden.MetodoPago" style="border: 1px solid gray;">
+                            <option value="">Seleccione un método de pago</option>
+                            <option value="efectivo">Efectivo</option>
+                            <option value="tarjeta">Tarjeta de Crédito</option>
+                        </select>
+                    </div>
+                    <ValidationMessage For="@(() => orden.MetodoPago)"></ValidationMessage>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button type="button" class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                    <i class="fa-solid fa-backward"></i> Volver
+                </button>
+                <button type="submit" class="btn" style="background-color: #FF9F1C; color: white;">
+                    <i class="fa-solid fa-share-from-square"></i> Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public int ordenId { get; set; }
+    private Ordenes orden = new Ordenes();
+
+    protected override async Task OnInitializedAsync()
+    {
+        orden = await ordenesServices.Buscar(ordenId) ?? new Ordenes();
+    }
+
+    private async Task Actualizar()
+    {
+        if (await ordenesServices.Modificar(orden))
+        {
+            Volver();
+        }
+    }
+
+    private void Volver()
+    {
+        navigation.NavigateTo("/Index/Ordenes");
+    }
+}
