@@ -18,6 +18,7 @@ namespace ProyectoAplicado1.Data
         public DbSet<DetalleItems> DetalleItems { get; set; }
 
         public DbSet<OrdenesDelivery> OrdenesDelivery { get; set; }
+        public DbSet<Reportes> Reportes { get; set; }
     }
 }
           
