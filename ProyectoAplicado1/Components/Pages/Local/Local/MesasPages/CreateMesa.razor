@@ -1,0 +1,84 @@
+﻿@page "/Create/Mesas"
+@rendermode InteractiveServer
+@inject MesaServices mesaServices
+@inject NavigationManager navigation
+
+<PageTitle>Añadir nueva mesa</PageTitle>
+<EditForm Model="mesa" OnValidSubmit="Crear">
+    <DataAnnotationsValidator />
+    <div class="container mt-5 pt-5">
+        <div class="card shadow-lg">
+            <div class="card-header" style="background-color: #FF9F1C; color: white;">
+                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Añadir Mesa</strong></h2>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label" for="MesaId" style="font-family: 'Poppins', sans-serif;"><strong>Mesa Id </strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </span>
+                        <InputNumber id="MesaId" class="form-control" @bind-Value="mesa.MesaId" style="border: 1px solid gray;"></InputNumber>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="Nombre" style="font-family: 'Poppins', sans-serif;"><strong>Nombre de la mesa</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </span>
+                        <InputText id="mesa" class="form-control" @bind-Value="mesa.Nombre" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => mesa.Nombre)"></ValidationMessage>
+                </div>
+
+                <div class="card-footer">
+                    <button type="button" class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                        <i class="fa-solid fa-backward"></i> Volver
+                    </button>
+                    <button type="submit" class="btn" style="background-color: #FF9F1C; color: white;">
+                        <i class="fa-solid fa-share-from-square"></i> Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+<style>
+    .gray-border {
+        border: 1px solid gray;
+    }
+</style>
+
+@code {
+    public Mesas mesa { get; set; } = new Mesas();
+    public bool NombreRepetido { get; set; }
+
+    public async Task<bool> Validar()
+    {
+        var existeItem = await mesaServices.ValidarMesaUnica(mesa.MesaId, mesa.Nombre);
+        return existeItem == null;
+    }
+
+    public async Task Crear()
+    {
+        if (!await Validar())
+        {
+            await mesaServices.Guardar(mesa);
+            mesa = new Mesas();
+            Volver();
+        }
+        else
+        {
+            NombreRepetido = true; // Puedes manejar un mensaje de error aquí si es necesario
+        }
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Index/Mesa");
+    }
+}
+

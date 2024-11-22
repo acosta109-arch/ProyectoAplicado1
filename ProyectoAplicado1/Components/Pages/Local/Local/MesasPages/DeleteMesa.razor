@@ -1,0 +1,57 @@
+﻿@page "/Mesas/Delete/"
+@page "/Mesas/Delete/{MesaId:int}"
+@rendermode InteractiveServer
+@inject MesaServices mesaServices
+@inject NavigationManager navigation
+
+<PageTitle>Eliminar Mesa</PageTitle>
+
+<div class="container mt-5 pt-5">
+    <div class="card shadow-lg">
+        <!-- Header -->
+        <div class="card-header" style="background-color: #FF9F1C; color: white;">
+            <h2 style="font-family: 'Poppins', sans-serif;"><strong>Eliminar Mesa</strong></h2>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <div class="mb-3">
+                <strong>Mesa Id:</strong> @mesa?.MesaId
+            </div>
+            <div class="mb-3">
+                <strong>Nombre:</strong> @mesa?.Nombre
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer text-left">
+            <button class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                <i class="fa-solid fa-backward"></i> Volver
+            </button>
+            <button class="btn btn-danger" @onclick="ConfirmarEliminar">
+                <i class="fa-solid fa-trash"></i> Confirmar Eliminación
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int MesaId { get; set; }
+    private Mesas? mesa;
+
+    protected override async Task OnInitializedAsync()
+    {
+        mesa = await mesaServices.Buscar(MesaId);
+    }
+
+    private void Volver() => navigation.NavigateTo("/Index/Mesa");
+
+    private async Task ConfirmarEliminar()
+    {
+        if (mesa != null)
+        {
+            await mesaServices.Eliminar(MesaId);
+            navigation.NavigateTo("/Index/Mesa");
+        }
+    }
+}
