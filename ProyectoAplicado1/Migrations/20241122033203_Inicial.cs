@@ -190,6 +190,20 @@ namespace ProyectoAplicado1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reportes",
+                columns: table => new
+                {
+                    ReporteId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: false),
+                    Descripcion = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reportes", x => x.ReporteId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -411,6 +425,9 @@ namespace ProyectoAplicado1.Migrations
 
             migrationBuilder.DropTable(
                 name: "Postres");
+
+            migrationBuilder.DropTable(
+                name: "Reportes");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

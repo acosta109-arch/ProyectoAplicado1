@@ -11,7 +11,7 @@ using ProyectoAplicado1.Data;
 namespace ProyectoAplicado1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241115174359_Inicial")]
+    [Migration("20241122033203_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -505,6 +505,25 @@ namespace ProyectoAplicado1.Migrations
                     b.HasKey("OrdenId");
 
                     b.ToTable("OrdenesDelivery");
+                });
+
+            modelBuilder.Entity("ProyectoAplicado1.Models.Reportes", b =>
+                {
+                    b.Property<int>("ReporteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ReporteId");
+
+                    b.ToTable("Reportes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

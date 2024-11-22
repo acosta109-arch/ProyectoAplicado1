@@ -504,6 +504,25 @@ namespace ProyectoAplicado1.Migrations
                     b.ToTable("OrdenesDelivery");
                 });
 
+            modelBuilder.Entity("ProyectoAplicado1.Models.Reportes", b =>
+                {
+                    b.Property<int>("ReporteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ReporteId");
+
+                    b.ToTable("Reportes");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
