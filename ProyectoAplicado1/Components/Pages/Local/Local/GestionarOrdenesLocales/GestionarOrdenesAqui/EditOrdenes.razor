@@ -2,10 +2,12 @@
 @rendermode InteractiveServer
 @inject OrdenesServices ordenesServices
 @inject NavigationManager navigation
+@inject SweetAlertService Swal
+
 
 <PageTitle>Editar Orden</PageTitle>
 
-<EditForm Model="orden" OnValidSubmit="Actualizar">
+<EditForm Model="orden" OnValidSubmit="ConfirmarActualizar">
     <DataAnnotationsValidator />
     <div class="container mt-5 pt-5">
         <div class="card shadow-lg">
@@ -79,6 +81,28 @@
     {
         orden = await ordenesServices.Buscar(ordenId) ?? new Ordenes();
     }
+    public async Task ConfirmarActualizar()
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "¿Deseas guardar los cambios?",
+                ShowDenyButton = true,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Guardar",
+                DenyButtonText = "No guardar"
+            });
+
+        if (result.IsConfirmed)
+        {
+            await Actualizar();
+            await Swal.FireAsync("¡Guardado!", "", SweetAlertIcon.Success);
+        }
+        else if (result.IsDenied)
+        {
+            await Swal.FireAsync("Los cambios no se han guardado", "", SweetAlertIcon.Info);
+            navigation.NavigateTo("/Index/OrdenesAqui");
+        }
+    }
 
     private async Task Actualizar()
     {
@@ -93,3 +117,4 @@
         navigation.NavigateTo("/Index/OrdenesAqui");
     }
 }
+<script src="_content/CurrieTechnologies.Razor.SweetAlert2/sweetalert2.min.js"></script>
