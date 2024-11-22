@@ -81,7 +81,7 @@ public class DetalleItemsServices
     {
         // Buscar un detalle que tenga el mismo nombre o descripción
         var detalleItemExistente = await _contexto.DetalleItems
-            .Where(d => (d.Nombre == nombre || d.Descripcion == descripcion) && d.DetalleItemId != detalleItemId)
+            .Where(d => (d.Nombre == nombre) && d.DetalleItemId != detalleItemId)
             .FirstOrDefaultAsync();
 
         return detalleItemExistente; // Si es null, el detalle ítem es único

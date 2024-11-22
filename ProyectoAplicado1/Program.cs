@@ -8,6 +8,7 @@ using ProyectoAplicado1.Data;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using ProyectoAplicado1.Services;
+using CurrieTechnologies.Razor.SweetAlert2;
 
 namespace ProyectoAplicado1
 {
@@ -66,6 +67,8 @@ namespace ProyectoAplicado1
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            builder.Services.AddSweetAlert2();  // Agregar SweetAlert2
 
             builder.Services.AddCascadingAuthenticationState();
             builder.Services.AddScoped<IdentityUserAccessor>();
