@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @inject OrdenesDeliveryServices ordenesServices
 @inject NavigationManager navigation
+@inject SweetAlertService Swal
 
 <PageTitle>Eliminar Orden</PageTitle>
 
@@ -56,10 +57,31 @@
 
     private async Task ConfirmarEliminar()
     {
-        if (orden != null)
+        var result = await Swal.FireAsync(new SweetAlertOptions
         {
-            await ordenesServices.Eliminar(ordenId);
-            navigation.NavigateTo("/Index/OrdenesDeliveryGestionar");
+            Title = "¿Estás seguro?",
+            Text = "¡No podrás revertir esto!",
+            Icon = SweetAlertIcon.Warning,
+            ShowCancelButton = true,
+            ConfirmButtonColor = "#3085d6",
+            CancelButtonColor = "#d33",
+            ConfirmButtonText = "Sí, eliminarlo"
+        });
+
+        if (result.IsConfirmed)
+        {
+            if (orden != null)
+            {
+                await ordenesServices.Eliminar(ordenId);
+                await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "¡Eliminado!",
+                    Text = "La orden ha sido eliminada.",
+                    Icon = SweetAlertIcon.Success
+                });
+                navigation.NavigateTo("/Index/OrdenesDeliveryGestionar");
+            }
         }
     }
 }
+<script src="_content/CurrieTechnologies.Razor.SweetAlert2/sweetalert2.min.js"></script>
