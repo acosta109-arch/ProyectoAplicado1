@@ -2,9 +2,10 @@
 @rendermode InteractiveServer
 @inject MeserosServices meseroServices
 @inject NavigationManager navigation
+@inject SweetAlertService Swal
 
 <PageTitle>Editar Mesero</PageTitle>
-<EditForm Model="mesero" OnValidSubmit="Actualizar">
+<EditForm Model="mesero" OnValidSubmit="ConfirmarActualizar">
     <DataAnnotationsValidator />
     <div class="container mt-5 pt-5">
         <div class="card shadow-lg">
@@ -86,6 +87,29 @@
         mesero = await meseroServices.Buscar(meseroId) ?? new Meseros();
     }
 
+    public async Task ConfirmarActualizar()
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+        {
+            Title = "¿Deseas guardar los cambios?",
+            ShowDenyButton = true,
+            ShowCancelButton = true,
+            ConfirmButtonText = "Guardar",
+            DenyButtonText = "No guardar"
+        });
+
+        if (result.IsConfirmed)
+        {
+            await Swal.FireAsync("¡Modificado!", "", SweetAlertIcon.Success);
+            await Actualizar();
+        }
+        else if (result.IsDenied)
+        {
+            await Swal.FireAsync("Los cambios no se han guardado", "", SweetAlertIcon.Info);
+            navigation.NavigateTo("/Index/Meseros");
+        }
+    }
+
     public async Task Actualizar()
     {
         if (await meseroServices.Modificar(mesero))
@@ -99,3 +123,5 @@
         navigation.NavigateTo("/Index/Meseros");
     }
 }
+
+<script src="_content/CurrieTechnologies.Razor.SweetAlert2/sweetalert2.min.js"></script>

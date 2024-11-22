@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @inject MeserosServices meseroServices
 @inject NavigationManager navigation
+@inject SweetAlertService Swal
 
 <PageTitle>Eliminar Mesero</PageTitle>
 
@@ -56,10 +57,33 @@
 
     private async Task ConfirmarEliminar()
     {
-        if (mesero != null)
+        var result = await Swal.FireAsync(new SweetAlertOptions
         {
-            await meseroServices.Eliminar(meseroId);
-            navigation.NavigateTo("/Index/Meseros");
+            Title = "¿Estas Seguro?",
+            Text = "No podrás recuperarlo luego de eliminarlo!",
+            Icon = SweetAlertIcon.Warning,
+            ShowCancelButton = true,
+            ConfirmButtonColor = "#3085d6",
+            CancelButtonColor = "#d33",
+            CancelButtonText = "Cancelar",
+            ConfirmButtonText = "Si, Eliminar!"
+        });
+
+        if (result.IsConfirmed)
+        {
+            if (mesero != null)
+            {
+                await meseroServices.Eliminar(meseroId);
+                await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Eliminado!",
+                    Text = "El mesero ha sido Eliminado.",
+                    Icon = SweetAlertIcon.Success
+                });
+                navigation.NavigateTo("/Index/Meseros");
+            }
         }
     }
 }
+
+<script src="_content/CurrieTechnologies.Razor.SweetAlert2/sweetalert2.min.js"></script>

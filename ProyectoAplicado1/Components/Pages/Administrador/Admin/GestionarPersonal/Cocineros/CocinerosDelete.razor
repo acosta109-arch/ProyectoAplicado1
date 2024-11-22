@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @inject CocineroServices cocineroServices
 @inject NavigationManager navigation
+@inject SweetAlertService Swal
 
 <PageTitle>Eliminar Cocinero</PageTitle>
 
@@ -59,10 +60,32 @@
 
     private async Task ConfirmarEliminar()
     {
-        if (cocinero != null)
+        var result = await Swal.FireAsync(new SweetAlertOptions
         {
-            await cocineroServices.Eliminar(cocineroId);
-            navigation.NavigateTo("/Index/Cocineros");
+            Title = "¿Estás seguro?",
+            Text = "¡No podrás revertir esto!",
+            Icon = SweetAlertIcon.Warning,
+            ShowCancelButton = true,
+            ConfirmButtonColor = "#3085d6",
+            CancelButtonColor = "#d33",
+            ConfirmButtonText = "Sí, eliminarlo"
+        });
+
+        if (result.IsConfirmed)
+        {
+            if (cocinero != null)
+            {
+                await cocineroServices.Eliminar(cocineroId);
+                await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "¡Eliminado!",
+                    Text = "El cocinero ha sido eliminado.",
+                    Icon = SweetAlertIcon.Success
+                });
+                navigation.NavigateTo("/Index/Cocineros");
+            }
         }
     }
 }
+
+<script src="_content/CurrieTechnologies.Razor.SweetAlert2/sweetalert2.min.js"></script>

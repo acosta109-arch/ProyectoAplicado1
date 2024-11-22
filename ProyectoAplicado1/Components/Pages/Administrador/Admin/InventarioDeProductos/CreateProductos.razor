@@ -2,6 +2,8 @@
 @rendermode InteractiveServer
 @inject DetalleItemsServices itemsService
 @inject NavigationManager navigation
+@inject SweetAlertService Swal
+
 
 <PageTitle>Añadir nuevo ítem</PageTitle>
 <EditForm Model="items" OnValidSubmit="Crear">
@@ -78,7 +80,7 @@
 
             @*Footer*@
             <div class="card-footer">
-                <button type="button" class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                <button type="button" class="btn" style="background-color: #2EC4B6; color: white;" @onclick="ConfirmarVolver">
                     <i class="fa-solid fa-backward"></i> Volver
                 </button>
                 <button type="submit" class="btn" style="background-color: #FF9F1C; color: white;">
@@ -110,13 +112,46 @@
         if (await Validar()) // Cambiado a validar positivamente
         {
             await itemsService.Guardar(items);
+            await Swal.FireAsync(new SweetAlertOptions
+                {
+                    Position = "top-end",
+                    Icon = SweetAlertIcon.Success,
+                    Title = "El producto se ha guardado Exitosamente",
+                    ShowConfirmButton = false,
+                    Timer = 1500
+                });
+          
             items = new DetalleItems();
             Volver();
         }
         else
         {
-            // Si el nombre ya existe, muestra un mensaje o toma otra acción
             NombreRepetido = true;
+            await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Hay un Problema!!",
+                Text = "El nombre que intentas registrar ya existe!!",
+                Icon = SweetAlertIcon.Error
+            });
+        }
+    }
+
+    public async Task ConfirmarVolver()
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "¿Estas seguro que decas salir?",
+                Icon = SweetAlertIcon.Question,
+                IconHtml = "؟",
+                ConfirmButtonText = "Volver",
+                CancelButtonText = "Continuar",
+                ShowCancelButton = true,
+                ShowCloseButton = true
+            });
+
+        if (!string.IsNullOrEmpty(result.Value))
+        {
+            Volver();
         }
     }
 
@@ -125,3 +160,5 @@
         navigation.NavigateTo("/Index/Items");
     }
 }
+
+<script src="_content/CurrieTechnologies.Razor.SweetAlert2/sweetalert2.min.js"></script>

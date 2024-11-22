@@ -2,9 +2,10 @@
 @rendermode InteractiveServer
 @inject CocineroServices cocineroServices
 @inject NavigationManager navigation
+@inject SweetAlertService Swal
 
 <PageTitle>Editar Cocinero</PageTitle>
-<EditForm Model="cocinero" OnValidSubmit="Actualizar">
+<EditForm Model="cocinero" OnValidSubmit="ConfirmarActualizar">
     <DataAnnotationsValidator />
     <div class="container mt-5 pt-5">
         <div class="card shadow-lg">
@@ -102,6 +103,28 @@
         cocinero = await cocineroServices.Buscar(cocineroId) ?? new Cocineros();
     }
 
+    public async Task ConfirmarActualizar()
+    {
+        var result = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "¿Deseas guardar los cambios?",
+                ShowDenyButton = true,
+                ShowCancelButton = true,
+                ConfirmButtonText = "Guardar",
+                DenyButtonText = "No guardar"
+            });
+
+        if (result.IsConfirmed)
+        {
+            await Swal.FireAsync("¡Modificado!", "", SweetAlertIcon.Success);
+            await Actualizar();
+        }
+        else if (result.IsDenied)
+        {
+            await Swal.FireAsync("Los cambios no se han guardado", "", SweetAlertIcon.Info);
+            navigation.NavigateTo("/Index/Cocineros");
+        }
+    }
     public async Task Actualizar()
     {
         if (await cocineroServices.Modificar(cocinero))
@@ -115,3 +138,5 @@
         navigation.NavigateTo("/Index/Cocineros");
     }
 }
+
+<script src="_content/CurrieTechnologies.Razor.SweetAlert2/sweetalert2.min.js"></script>
