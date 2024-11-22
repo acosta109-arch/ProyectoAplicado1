@@ -11,8 +11,8 @@ using ProyectoAplicado1.Data;
 namespace ProyectoAplicado1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241122033203_Inicial")]
-    partial class Inicial
+    [Migration("20241122125450_NuevaMigracion")]
+    partial class NuevaMigracion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -443,6 +443,21 @@ namespace ProyectoAplicado1.Migrations
                     b.HasKey("ItemId");
 
                     b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("ProyectoAplicado1.Models.Mesas", b =>
+                {
+                    b.Property<int>("MesaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("MesaId");
+
+                    b.ToTable("Mesas");
                 });
 
             modelBuilder.Entity("ProyectoAplicado1.Models.Ordenes", b =>

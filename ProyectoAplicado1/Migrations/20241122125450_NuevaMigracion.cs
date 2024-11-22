@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProyectoAplicado1.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class NuevaMigracion : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -118,6 +118,19 @@ namespace ProyectoAplicado1.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Items", x => x.ItemId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mesas",
+                columns: table => new
+                {
+                    MesaId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mesas", x => x.MesaId);
                 });
 
             migrationBuilder.CreateTable(
@@ -419,6 +432,9 @@ namespace ProyectoAplicado1.Migrations
 
             migrationBuilder.DropTable(
                 name: "Items");
+
+            migrationBuilder.DropTable(
+                name: "Mesas");
 
             migrationBuilder.DropTable(
                 name: "Meseros");

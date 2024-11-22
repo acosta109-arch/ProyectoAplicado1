@@ -442,6 +442,21 @@ namespace ProyectoAplicado1.Migrations
                     b.ToTable("Items");
                 });
 
+            modelBuilder.Entity("ProyectoAplicado1.Models.Mesas", b =>
+                {
+                    b.Property<int>("MesaId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("MesaId");
+
+                    b.ToTable("Mesas");
+                });
+
             modelBuilder.Entity("ProyectoAplicado1.Models.Ordenes", b =>
                 {
                     b.Property<int>("OrdenId")
