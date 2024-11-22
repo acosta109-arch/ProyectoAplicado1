@@ -94,6 +94,7 @@ namespace ProyectoAplicado1
             builder.Services.AddScoped<OrdenesServices>();
             builder.Services.AddScoped<DetalleItemsServices>();
             builder.Services.AddScoped<OrdenesDeliveryServices>();
+            builder.Services.AddScoped<ReporteService>();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
