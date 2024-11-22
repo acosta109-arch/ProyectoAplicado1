@@ -1,0 +1,89 @@
+﻿@page "/Create/Reportes"
+@rendermode InteractiveServer
+@inject ReporteService reporteService
+@inject NavigationManager navigation
+
+<PageTitle>Añadir nuevo ítem</PageTitle>
+<EditForm Model="reporte" OnValidSubmit="Crear">
+    <DataAnnotationsValidator />
+    <div class="container mt-5 pt-5">
+        <div class="card shadow-lg">
+            @*Header*@
+            <div class="card-header" style="background-color: #FF9F1C; color: white;">
+                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Añadir Reporte</strong></h2>
+            </div>
+            @*Body*@
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label" for="nombres" style="font-family: 'Poppins', sans-serif;"><strong>Nombre Reporte</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </span>
+                        <InputText id="nombres" class="form-control" @bind-Value="reporte.Nombre" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => reporte.Nombre)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="descripcion" style="font-family: 'Poppins', sans-serif;"><strong>Descripción del reporte</strong></label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </span>
+                        <InputText id="descripcion" class="form-control" @bind-Value="reporte.Descripcion" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => reporte.Descripcion)"></ValidationMessage>
+                </div>
+
+
+                @*Footer*@
+                <div class="card-footer">
+                    <button type="button" class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                        <i class="fa-solid fa-backward"></i> Volver
+                    </button>
+                    <button type="submit" class="btn" style="background-color: #FF9F1C; color: white;">
+                        <i class="fa-solid fa-share-from-square"></i> Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+<style>
+    .gray-border {
+        border: 1px solid gray;
+    }
+</style>
+
+@code {
+    public Reportes reporte { get; set; } = new Reportes();
+    public bool NombreRepetido { get; set; }
+
+    public async Task<bool> Validar()
+    {
+        var existeItem = await reporteService.ValidarReporteUnico(reporte.ReporteId, reporte.Nombre, reporte.Descripcion);
+        return existeItem == null;
+    }
+
+    public async Task Crear()
+    {
+        if (!await Validar()) // Cambiado a validar positivamente
+        {
+            await reporteService.Guardar(reporte);
+            reporte = new Reportes();
+            Volver();
+        }
+        else
+        {
+            // Si el nombre ya existe, muestra un mensaje o toma otra acción
+            NombreRepetido = true;
+        }
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Index/Reporte");
+    }
+}
