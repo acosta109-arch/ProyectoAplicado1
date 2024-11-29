@@ -52,21 +52,27 @@ public class OrdenesServices
 
     public async Task<Ordenes?> Buscar(int id)
     {
+        // Incluir la mesa asociada con la orden
         return await _contexto.Ordenes
             .Include(o => o.DetalleItems)  // Incluyendo los detalles de la orden
+            .Include(o => o.Mesa)          // Incluir la mesa asociada
             .FirstOrDefaultAsync(o => o.OrdenId == id);
     }
 
     public async Task<List<Ordenes>> Listar(Expression<Func<Ordenes, bool>> criterio)
     {
+        // Incluir la mesa asociada con la orden
         return await _contexto.Ordenes.AsNoTracking()
+            .Include(o => o.Mesa)          // Incluir la mesa asociada
             .Where(criterio)
             .ToListAsync();
     }
 
     public async Task<List<Ordenes>> ListarOrdenes()
     {
+        // Incluir la mesa asociada con la orden
         return await _contexto.Ordenes.AsNoTracking()
+            .Include(o => o.Mesa)          // Incluir la mesa asociada
             .ToListAsync();
     }
 
@@ -75,16 +81,18 @@ public class OrdenesServices
         return await _contexto.Ordenes.CountAsync();
     }
 
-    public async Task<bool> OrdenExiste(string nombreCliente, string mesa)
+    public async Task<bool> OrdenExiste(string nombreCliente)
     {
         return await _contexto.Ordenes
-            .AnyAsync(o => o.NombreCliente == nombreCliente || o.Mesa == mesa);
+            .AnyAsync(o => o.NombreCliente == nombreCliente);
     }
 
     public async Task<Ordenes> GetOrdenById(int id)
     {
+        // Incluir los ítems relacionados y la mesa asociada
         return await _contexto.Ordenes
-            .Include(o => o.DetalleItems) // Incluye los ítems relacionados
+            .Include(o => o.DetalleItems)  
+            .Include(o => o.Mesa)         
             .FirstOrDefaultAsync(o => o.OrdenId == id);
     }
 }

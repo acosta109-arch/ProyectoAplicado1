@@ -3,6 +3,7 @@
 @inject OrdenesServices ordenesService
 @inject DetalleItemsServices itemsService
 @inject NavigationManager navigation
+@inject MesaServices mesasService
 
 <PageTitle>Añadir nueva orden</PageTitle>
 <EditForm Model="orden" OnValidSubmit="Crear">
@@ -31,16 +32,15 @@
                         <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
                             <i class="fa-solid fa-table"></i>
                         </span>
-                        <select id="mesa" class="form-control" @bind="orden.Mesa" style="border: 1px solid gray;">
+                        <select id="mesa" class="form-control" @bind="orden.MesaId" style="border: 1px solid gray;">
                             <option value="">Seleccione una mesa</option>
-                            <option value="1">Mesa 1</option>
-                            <option value="2">Mesa 2</option>
-                            <option value="3">Mesa 3</option>
-                            <option value="4">Mesa 4</option>
-                            <option value="5">Mesa 5</option>
+                            @foreach (var mesa in mesas)
+                            {
+                                <option value="@mesa.MesaId">@mesa.Nombre</option>
+                            }
                         </select>
                     </div>
-                    <ValidationMessage For="@(() => orden.Mesa)"></ValidationMessage>
+                    <ValidationMessage For="@(() => orden.MesaId)"></ValidationMessage>
                 </div>
 
                 <div class="mb-3">
@@ -150,17 +150,40 @@
     .gray-border {
         border: 1px solid gray;
     }
+
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 10; /* Ensure the button is above other elements */
+    }
+
+    .btn-success {
+        background-color: #FF9F1C; /* New color */
+        border: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-success:hover {
+            background-color: #e08b19; /* Slightly darker shade for hover effect */
+        }
 </style>
 
 @code {
     public Ordenes orden { get; set; } = new Ordenes();
     public int selectedItemId { get; set; }
     public List<DetalleItems> allItems { get; set; } = new List<DetalleItems>();
+    private List<Mesas> mesas = new List<Mesas>();
 
     protected override async Task OnInitializedAsync()
     {
         // Cargar los ítems disponibles para el select
         allItems = await itemsService.GetAllItems();
+        mesas = await mesasService.Listar(m => true);
     }
 
     public async Task Crear()
@@ -178,7 +201,7 @@
 
     public void Volver()
     {
-        navigation.NavigateTo("/Index/Ordenes");
+        navigation.NavigateTo("/Ordenes");
     }
 
     public void AgregarItem()

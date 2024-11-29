@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProyectoAplicado1.Migrations
 {
     /// <inheritdoc />
-    public partial class NuevaMigracion : Migration
+    public partial class Inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -104,6 +104,23 @@ namespace ProyectoAplicado1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Delivery",
+                columns: table => new
+                {
+                    DeliveryId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NombreCompleto = table.Column<string>(type: "TEXT", nullable: false),
+                    FotoURL = table.Column<string>(type: "TEXT", nullable: false),
+                    Telefono = table.Column<string>(type: "TEXT", nullable: false),
+                    Turno = table.Column<string>(type: "TEXT", nullable: false),
+                    Ruta = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Delivery", x => x.DeliveryId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Items",
                 columns: table => new
                 {
@@ -147,41 +164,6 @@ namespace ProyectoAplicado1.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Meseros", x => x.MeseroId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Ordenes",
-                columns: table => new
-                {
-                    OrdenId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    NombreCliente = table.Column<string>(type: "TEXT", nullable: false),
-                    Mesa = table.Column<string>(type: "TEXT", nullable: false),
-                    MetodoPago = table.Column<string>(type: "TEXT", nullable: false),
-                    Cantidad = table.Column<int>(type: "INTEGER", nullable: false),
-                    Total = table.Column<decimal>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ordenes", x => x.OrdenId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrdenesDelivery",
-                columns: table => new
-                {
-                    OrdenId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    NombreCliente = table.Column<string>(type: "TEXT", nullable: false),
-                    Direccion = table.Column<string>(type: "TEXT", nullable: false),
-                    Delivery = table.Column<string>(type: "TEXT", nullable: false),
-                    MetodoPago = table.Column<string>(type: "TEXT", nullable: false),
-                    Cantidad = table.Column<int>(type: "INTEGER", nullable: false),
-                    Total = table.Column<decimal>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrdenesDelivery", x => x.OrdenId);
                 });
 
             migrationBuilder.CreateTable(
@@ -323,6 +305,53 @@ namespace ProyectoAplicado1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrdenesDelivery",
+                columns: table => new
+                {
+                    OrdenId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NombreCliente = table.Column<string>(type: "TEXT", nullable: false),
+                    Direccion = table.Column<string>(type: "TEXT", nullable: false),
+                    MetodoPago = table.Column<string>(type: "TEXT", nullable: false),
+                    Cantidad = table.Column<int>(type: "INTEGER", nullable: false),
+                    Total = table.Column<decimal>(type: "TEXT", nullable: false),
+                    DeliveryId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrdenesDelivery", x => x.OrdenId);
+                    table.ForeignKey(
+                        name: "FK_OrdenesDelivery_Delivery_DeliveryId",
+                        column: x => x.DeliveryId,
+                        principalTable: "Delivery",
+                        principalColumn: "DeliveryId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ordenes",
+                columns: table => new
+                {
+                    OrdenId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NombreCliente = table.Column<string>(type: "TEXT", nullable: false),
+                    MetodoPago = table.Column<string>(type: "TEXT", nullable: false),
+                    Cantidad = table.Column<int>(type: "INTEGER", nullable: false),
+                    Total = table.Column<decimal>(type: "TEXT", nullable: false),
+                    MesaId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ordenes", x => x.OrdenId);
+                    table.ForeignKey(
+                        name: "FK_Ordenes_Mesas_MesaId",
+                        column: x => x.MesaId,
+                        principalTable: "Mesas",
+                        principalColumn: "MesaId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DetalleItems",
                 columns: table => new
                 {
@@ -398,6 +427,16 @@ namespace ProyectoAplicado1.Migrations
                 name: "IX_DetalleItems_OrdenesOrdenId",
                 table: "DetalleItems",
                 column: "OrdenesOrdenId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ordenes_MesaId",
+                table: "Ordenes",
+                column: "MesaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrdenesDelivery_DeliveryId",
+                table: "OrdenesDelivery",
+                column: "DeliveryId");
         }
 
         /// <inheritdoc />
@@ -434,9 +473,6 @@ namespace ProyectoAplicado1.Migrations
                 name: "Items");
 
             migrationBuilder.DropTable(
-                name: "Mesas");
-
-            migrationBuilder.DropTable(
                 name: "Meseros");
 
             migrationBuilder.DropTable(
@@ -456,6 +492,12 @@ namespace ProyectoAplicado1.Migrations
 
             migrationBuilder.DropTable(
                 name: "Ordenes");
+
+            migrationBuilder.DropTable(
+                name: "Delivery");
+
+            migrationBuilder.DropTable(
+                name: "Mesas");
         }
     }
 }

@@ -2,8 +2,8 @@
 @using System.Security.Claims
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<a href="/" class="btn custom-login-btn back-button mt-4">
-    <i class="fa-solid fa-right-from-bracket"></i>
+<a href="/Index/Admin" class="btn btn-success back-button mt-5">
+    <i class="fa-solid fa-backward"></i>
 </a>
 <div class="container mt-5" style="font-family: 'Poppins', sans-serif; margin-top: 200px;">
     <div class="card text-center" style="background-color: #f8f9fa;">
@@ -72,13 +72,6 @@
         .custom-login-btn:hover {
             background-color: red; /* Color ligeramente más oscuro al pasar el mouse */
         }
-
-    .back-button {
-        position: absolute;
-        top: 75px;
-        right: 15px;
-        z-index: 10; /* Ensure the button is above other elements */
-    }
 
     /* Estilos generales para el modal */
     .perfil-modal {
@@ -150,6 +143,27 @@
         justify-content: center;
         padding-top: 1rem;
     }
+
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 10; /* Ensure the button is above other elements */
+    }
+
+    .btn-success {
+        background-color: #FF9F1C; /* New color */
+        border: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-success:hover {
+            background-color: #e08b19; /* Slightly darker shade for hover effect */
+        }
 
 </style>
 

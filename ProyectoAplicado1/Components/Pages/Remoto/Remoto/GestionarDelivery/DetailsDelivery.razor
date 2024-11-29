@@ -1,0 +1,50 @@
+﻿@page "/Delivery/Details/{DeliveryId:int}"
+@rendermode InteractiveServer
+@inject DeliveryService deliveryService
+@inject NavigationManager navigation
+
+<PageTitle>Detalles del Delivery</PageTitle>
+
+<div class="container mt-5 pt-5">
+    <div class="card shadow-lg">
+        <!-- Header -->
+        <div class="card-header" style="background-color: #FF9F1C; color: white;">
+            <h2 style="font-family: 'Poppins', sans-serif;"><strong>Detalles del Delivery</strong></h2>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <div class="mb-3">
+                <strong>Nombre Completo:</strong> @delivery?.NombreCompleto
+            </div>
+            <div class="mb-3">
+                <strong>Teléfono:</strong> @delivery?.Telefono
+            </div>
+            <div class="mb-3">
+                <strong>Turno:</strong> @delivery?.Turno
+            </div>
+            <div class="mb-3">
+                <strong>Ruta:</strong> @delivery?.Ruta
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer text-left">
+            <button class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                <i class="fa-solid fa-backward"></i> Volver
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int DeliveryId { get; set; }
+    private Delivery? delivery;
+
+    protected override async Task OnInitializedAsync()
+    {
+        delivery = await deliveryService.Buscar(DeliveryId);
+    }
+
+    private void Volver() => navigation.NavigateTo("/Index/Delivery");
+}

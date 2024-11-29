@@ -53,7 +53,8 @@ public class OrdenesDeliveryServices
     public async Task<OrdenesDelivery?> Buscar(int id)
     {
         return await _contexto.OrdenesDelivery
-            .Include(o => o.DetalleItems)
+            .Include(o => o.DetalleItems)  // Incluyendo los detalles de la orden
+            .Include(o => o.Delivery)      // Incluir la relación con Delivery
             .FirstOrDefaultAsync(o => o.OrdenId == id);
     }
 
@@ -67,6 +68,7 @@ public class OrdenesDeliveryServices
     public async Task<List<OrdenesDelivery>> ListarOrdenesDelivery()
     {
         return await _contexto.OrdenesDelivery.AsNoTracking()
+            .Include(o => o.Delivery)  // Incluyendo la relación con Delivery
             .ToListAsync();
     }
 
@@ -79,5 +81,11 @@ public class OrdenesDeliveryServices
     {
         return await _contexto.OrdenesDelivery
             .AnyAsync(o => o.Direccion == direccionCliente);
+    }
+
+    // Método para obtener todos los deliveries
+    public async Task<List<Delivery>> ObtenerDeliveries()
+    {
+        return await _contexto.Delivery.AsNoTracking().ToListAsync();
     }
 }

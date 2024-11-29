@@ -1,0 +1,133 @@
+﻿@page "/Create/Delivery"
+@rendermode InteractiveServer
+@inject DeliveryService deliveryService
+@inject NavigationManager navigation
+
+<PageTitle>Añadir nuevo Delivery</PageTitle>
+
+<EditForm Model="delivery" OnValidSubmit="Crear">
+    <DataAnnotationsValidator />
+    <div class="container mt-5 pt-5">
+        <div class="card shadow-lg">
+            @*Header*@
+            <div class="card-header" style="background-color: #FF9F1C; color: white;">
+                <h2 style="font-family: 'Poppins', sans-serif;"><strong>Añadir Delivery</strong></h2>
+            </div>
+            @*Body*@
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label" for="nombreCompleto" style="font-family: 'Poppins', sans-serif;">
+                        <strong>Nombre Completo</strong>
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <InputText id="nombreCompleto" class="form-control" @bind-Value="delivery.NombreCompleto" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => delivery.NombreCompleto)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="fotoURL" style="font-family: 'Poppins', sans-serif;">
+                        <strong>URL de la Foto</strong>
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-image"></i>
+                        </span>
+                        <InputText id="fotoURL" class="form-control" @bind-Value="delivery.FotoURL" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => delivery.FotoURL)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="telefono" style="font-family: 'Poppins', sans-serif;">
+                        <strong>Teléfono</strong>
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-phone"></i>
+                        </span>
+                        <InputText id="telefono" class="form-control" @bind-Value="delivery.Telefono" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => delivery.Telefono)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="turno" style="font-family: 'Poppins', sans-serif;">
+                        <strong>Turno</strong>
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-clock"></i>
+                        </span>
+                        <InputText id="turno" class="form-control" @bind-Value="delivery.Turno" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => delivery.Turno)"></ValidationMessage>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="ruta" style="font-family: 'Poppins', sans-serif;">
+                        <strong>Ruta</strong>
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
+                            <i class="fa-solid fa-map-marker-alt"></i>
+                        </span>
+                        <InputText id="ruta" class="form-control" @bind-Value="delivery.Ruta" style="border: 1px solid gray;"></InputText>
+                    </div>
+                    <ValidationMessage For="@(() => delivery.Ruta)"></ValidationMessage>
+                </div>
+
+                @*Footer*@
+                <div class="card-footer">
+                    <button type="button" class="btn" style="background-color: #2EC4B6; color: white;" @onclick="Volver">
+                        <i class="fa-solid fa-backward"></i> Volver
+                    </button>
+                    <button type="submit" class="btn" style="background-color: #FF9F1C; color: white;">
+                        <i class="fa-solid fa-share-from-square"></i> Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+<style>
+    .gray-border {
+        border: 1px solid gray;
+    }
+</style>
+
+@code {
+    public Delivery delivery { get; set; } = new Delivery();
+    public bool NombreRepetido { get; set; }
+
+    public async Task<bool> Validar()
+    {
+        // Ahora pasamos los tres parámetros: DeliveryId, NombreCompleto, y Telefono
+        var existeItem = await deliveryService.ValidarDeliveryUnico(delivery.DeliveryId, delivery.NombreCompleto, delivery.Telefono);
+        return existeItem == null;
+    }
+
+    public async Task Crear()
+    {
+        if (await Validar()) // Cambiado a validar positivamente
+        {
+            await deliveryService.Guardar(delivery);
+            delivery = new Delivery();
+            Volver();
+        }
+        else
+        {
+            // Si el nombre ya existe, muestra un mensaje o toma otra acción
+            NombreRepetido = true;
+        }
+    }
+
+    public void Volver()
+    {
+        navigation.NavigateTo("/Index/Delivery");
+    }
+}

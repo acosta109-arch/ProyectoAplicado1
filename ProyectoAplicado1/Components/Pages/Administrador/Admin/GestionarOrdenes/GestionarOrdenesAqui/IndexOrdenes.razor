@@ -77,16 +77,36 @@
         .btn-custom:hover {
             background-color: #29b0a8;
         }
+
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 10; /* Ensure the button is above other elements */
+    }
+
+    .btn-success {
+        background-color: #FF9F1C; /* New color */
+        border: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-success:hover {
+            background-color: #e08b19; /* Slightly darker shade for hover effect */
+        }
 </style>
 
 <div class="container mt-5 pt-5">
+    <a href="/Index/General" class="btn btn-success back-button mt-5">
+        <i class="fa-solid fa-backward"></i>
+    </a>
     <h1 class="text-center mb-5 titulo">
         <i class="fa-solid fa-box-open"></i> Área de Órdenes <i class="fa-solid fa-box-open"></i>
     </h1>
-
-    <div class="text-left mb-4">
-        <a href="/Create/Ordenes" class="btn btn-custom"><i class="fa-solid fa-square-plus"></i> Añadir Orden</a>
-    </div>
 
     <div class="filter-container mb-4">
         <input type="text" class="form-control search-box" placeholder="Buscar por cliente o fecha..." @oninput="AplicarFiltro" @bind="busquedaCliente" />

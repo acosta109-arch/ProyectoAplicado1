@@ -369,6 +369,37 @@ namespace ProyectoAplicado1.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("ProyectoAplicado1.Models.Delivery", b =>
+                {
+                    b.Property<int>("DeliveryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FotoURL")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NombreCompleto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Ruta")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Turno")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("DeliveryId");
+
+                    b.ToTable("Delivery");
+                });
+
             modelBuilder.Entity("ProyectoAplicado1.Models.DetalleItems", b =>
                 {
                     b.Property<int>("DetalleItemId")
@@ -466,9 +497,8 @@ namespace ProyectoAplicado1.Migrations
                     b.Property<int>("Cantidad")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Mesa")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("MesaId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("MetodoPago")
                         .IsRequired()
@@ -483,6 +513,8 @@ namespace ProyectoAplicado1.Migrations
 
                     b.HasKey("OrdenId");
 
+                    b.HasIndex("MesaId");
+
                     b.ToTable("Ordenes");
                 });
 
@@ -495,9 +527,8 @@ namespace ProyectoAplicado1.Migrations
                     b.Property<int>("Cantidad")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Delivery")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("DeliveryId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Direccion")
                         .IsRequired()
@@ -515,6 +546,8 @@ namespace ProyectoAplicado1.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("OrdenId");
+
+                    b.HasIndex("DeliveryId");
 
                     b.ToTable("OrdenesDelivery");
                 });
@@ -598,6 +631,28 @@ namespace ProyectoAplicado1.Migrations
                     b.HasOne("ProyectoAplicado1.Models.Ordenes", null)
                         .WithMany("DetalleItems")
                         .HasForeignKey("OrdenesOrdenId");
+                });
+
+            modelBuilder.Entity("ProyectoAplicado1.Models.Ordenes", b =>
+                {
+                    b.HasOne("ProyectoAplicado1.Models.Mesas", "Mesa")
+                        .WithMany()
+                        .HasForeignKey("MesaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Mesa");
+                });
+
+            modelBuilder.Entity("ProyectoAplicado1.Models.OrdenesDelivery", b =>
+                {
+                    b.HasOne("ProyectoAplicado1.Models.Delivery", "Delivery")
+                        .WithMany()
+                        .HasForeignKey("DeliveryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Delivery");
                 });
 
             modelBuilder.Entity("ProyectoAplicado1.Models.Ordenes", b =>

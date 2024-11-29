@@ -7,9 +7,10 @@ public class Ordenes
     [Key]
     public int OrdenId { get; set; }
 
+    [Required(ErrorMessage = "El nombre del cliente es obligatorio.")]
     public string NombreCliente { get; set; }
 
-    public string Mesa { get; set; }
+    [Required(ErrorMessage = "La mesa es obligatoria.")]
 
     public ICollection<DetalleItems> DetalleItems { get; set; } = new List<DetalleItems>();
 
@@ -19,4 +20,9 @@ public class Ordenes
     public int Cantidad { get; set; }
 
     public decimal Total { get; set; }
+
+    [Required]
+    public int MesaId { get; set; }
+
+    public Mesas Mesa { get; set; }
 }

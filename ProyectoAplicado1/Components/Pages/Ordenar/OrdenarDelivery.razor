@@ -3,6 +3,7 @@
 @inject OrdenesDeliveryServices ordenesService
 @inject DetalleItemsServices itemsService
 @inject NavigationManager navigation
+@inject DeliveryService deliveryService
 
 <PageTitle>Añadir nueva orden</PageTitle>
 <EditForm Model="orden" OnValidSubmit="Crear">
@@ -37,24 +38,22 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label" for="deliverySeleccionado" style="font-family: 'Poppins', sans-serif;">
-                        <strong>Seleccione un Delivery</strong>
-                    </label>
+                    <label class="form-label" for="delivery" style="font-family: 'Poppins', sans-serif;"><strong>Delivery</strong></label>
                     <div class="input-group">
                         <span class="input-group-text" style="background-color: #FF9F1C; color: white;">
                             <i class="fa-solid fa-truck"></i>
                         </span>
-                        <select id="deliverySeleccionado" class="form-select" @bind="orden.Delivery" style="border: 1px solid gray;">
-                            <option disabled selected>Seleccione un Delivery</option>
-                            <option value="Juan Pérez">Juan Pérez</option>
-                            <option value="María López">María López</option>
-                            <option value="Carlos García">Carlos García</option>
-                            <option value="Ana Sánchez">Ana Sánchez</option>
-                            <option value="Luis Fernández">Luis Fernández</option>
+                        <select id="delivery" class="form-control" @bind="orden.DeliveryId" style="border: 1px solid gray;">
+                            <option value="">Seleccione un Delivery</option>
+                            @foreach (var delivery in deliveries)
+                            {
+                                <option value="@delivery.DeliveryId">@delivery.NombreCompleto</option>
+                            }
                         </select>
                     </div>
-                    <ValidationMessage For="@(() => orden.Delivery)"></ValidationMessage>
+                    <ValidationMessage For="@(() => orden.DeliveryId)"></ValidationMessage>
                 </div>
+
 
                 <div class="mb-3">
                     <label class="form-label" for="metodoPago" style="font-family: 'Poppins', sans-serif;"><strong>Método de Pago</strong></label>
@@ -163,17 +162,40 @@
     .gray-border {
         border: 1px solid gray;
     }
+
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 10; /* Ensure the button is above other elements */
+    }
+
+    .btn-success {
+        background-color: #FF9F1C; /* New color */
+        border: none;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-success:hover {
+            background-color: #e08b19; /* Slightly darker shade for hover effect */
+        }
 </style>
 
 @code {
     public OrdenesDelivery orden { get; set; } = new OrdenesDelivery();
     public int selectedItemId { get; set; }
     public List<DetalleItems> allItems { get; set; } = new List<DetalleItems>();
+    private List<Delivery> deliveries = new List<Delivery>();
 
     protected override async Task OnInitializedAsync()
     {
         // Cargar los ítems disponibles para el select
         allItems = await itemsService.GetAllItems();
+        deliveries = await deliveryService.Listar(d => true);
     }
 
     public async Task Crear()
@@ -191,7 +213,7 @@
 
     public void Volver()
     {
-        navigation.NavigateTo("/Index/Ordenes");
+        navigation.NavigateTo("/Ordenes");
     }
 
     public void AgregarItem()

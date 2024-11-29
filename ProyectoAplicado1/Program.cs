@@ -96,6 +96,7 @@ namespace ProyectoAplicado1
             builder.Services.AddScoped<OrdenesDeliveryServices>();
             builder.Services.AddScoped<ReporteService>();
             builder.Services.AddScoped<MesaServices>();
+            builder.Services.AddScoped<DeliveryService>();
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
