@@ -3,7 +3,7 @@
 @inject CocineroServices cocineroServices
 @inject NavigationManager navigation
 @inject SweetAlertService Swal
-@attribute [Authorize(Roles = "Admin")]
+
 <PageTitle>Editar Cocinero</PageTitle>
 <EditForm Model="cocinero" OnValidSubmit="ConfirmarActualizar">
     <DataAnnotationsValidator />

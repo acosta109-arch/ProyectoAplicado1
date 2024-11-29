@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @inject ComidaServices comidasServices
 @inject NavigationManager navigation
-@attribute [Authorize(Roles = "Admin")]
+
 <PageTitle>Añadir nueva comida</PageTitle>
 <EditForm Model="comidas" OnValidSubmit="Crear">
     <DataAnnotationsValidator />

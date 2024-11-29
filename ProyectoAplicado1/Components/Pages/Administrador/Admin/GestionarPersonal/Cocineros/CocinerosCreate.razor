@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @inject CocineroServices cocineroServices
 @inject NavigationManager navigation
-@attribute [Authorize(Roles = "Admin")]
+
 <PageTitle>Añadir nuevo cocinero</PageTitle>
 <EditForm Model="cocinero" OnValidSubmit="Crear">
     <DataAnnotationsValidator />

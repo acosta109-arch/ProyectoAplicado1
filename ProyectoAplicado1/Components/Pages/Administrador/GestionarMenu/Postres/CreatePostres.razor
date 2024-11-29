@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @inject PostresServices postresServices
 @inject NavigationManager navigation
-@attribute [Authorize(Roles = "Admin")]
+
 <PageTitle>Añadir nuevo postre</PageTitle>
 <EditForm Model="postres" OnValidSubmit="Crear">
     <DataAnnotationsValidator />

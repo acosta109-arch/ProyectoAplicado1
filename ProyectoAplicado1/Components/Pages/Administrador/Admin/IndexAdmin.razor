@@ -1,7 +1,7 @@
 ﻿@page "/Index/Admin"
 @using System.Security.Claims
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@attribute [Authorize(Roles = "Admin")]
+
 <a href="/" class="btn custom-login-btn back-button mt-4">
     <i class="fa-solid fa-right-from-bracket"></i>
 </a>
@@ -41,12 +41,6 @@
                     <a href="/Index/GestionarPersonal" class="small-card">
                         <img src="https://cdn3d.iconscout.com/3d/premium/thumb/informacion-personal-7493527-6137036.png?f=webp" alt="Mis Dietas" class="img-fluid">
                         <h5>Gestionar personal</h5>
-                    </a>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <a href="/Index/Reporte" class="small-card">
-                        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/report-3d-icon-download-in-png-blend-fbx-gltf-file-formats--analytics-logo-chart-graph-pack-business-icons-4818086.png?f=webp" alt="Chat Entrenador" class="img-fluid">
-                        <h5>Gestionar reportes</h5>
                     </a>
                 </div>
                 <div class="col-md-4 mb-4">
