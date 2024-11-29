@@ -3,7 +3,7 @@
 @inject MeserosServices meseroServices
 @inject NavigationManager navigation
 @inject SweetAlertService Swal
-
+@attribute [Authorize(Roles = "Admin")]
 <PageTitle>Editar Mesero</PageTitle>
 <EditForm Model="mesero" OnValidSubmit="ConfirmarActualizar">
     <DataAnnotationsValidator />

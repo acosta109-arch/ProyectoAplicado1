@@ -1,7 +1,7 @@
 ﻿@page "/Index/GestionarPersonal"
 @using System.Security.Claims
 @inject AuthenticationStateProvider AuthenticationStateProvider
-
+@attribute [Authorize(Roles = "Admin")]
 <a href="/Index/Admin" class="btn btn-success back-button mt-5">
     <i class="fa-solid fa-backward"></i>
 </a>

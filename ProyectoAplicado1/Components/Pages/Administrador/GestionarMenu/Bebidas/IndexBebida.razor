@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @inject BebidasServices bebidasServices
 @inject NavigationManager navigation
-
+@attribute [Authorize(Roles = "Admin")]
 <PageTitle>Inicio bebidas</PageTitle>
 <style>
     .titulo {

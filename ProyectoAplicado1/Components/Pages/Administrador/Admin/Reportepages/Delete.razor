@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @inject ReporteService reporteService
 @inject NavigationManager navigation
-
+@attribute [Authorize(Roles = "Admin")]
 <PageTitle>Eliminar Reporte</PageTitle>
 
 <div class="container mt-5 pt-5">

@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @inject ItemsService itemsServices
 @inject NavigationManager navigation
-
+@attribute [Authorize(Roles = "Admin")]
 <PageTitle>Detalles del Item</PageTitle>
 
 <div class="container mt-5 pt-5">

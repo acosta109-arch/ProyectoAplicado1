@@ -3,7 +3,7 @@
 @inject OrdenesServices ordenesServices
 @inject NavigationManager navigation
 @inject SweetAlertService Swal
-
+@attribute [Authorize(Roles = "Cliente")]
 
 <PageTitle>Editar Orden</PageTitle>
 

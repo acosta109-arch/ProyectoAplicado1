@@ -3,7 +3,7 @@
 @inject DetalleItemsServices itemsService
 @inject NavigationManager navigation
 @inject SweetAlertService Swal
-
+@attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>Añadir nuevo ítem</PageTitle>
 <EditForm Model="items" OnValidSubmit="Crear">

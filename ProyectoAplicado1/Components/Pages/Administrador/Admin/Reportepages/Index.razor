@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @inject ReporteService reporteService
 @inject NavigationManager navigation
-
+@attribute [Authorize(Roles = "Admin")]
 <PageTitle>Inicio Reportes</PageTitle>
 <style>
     .titulo {

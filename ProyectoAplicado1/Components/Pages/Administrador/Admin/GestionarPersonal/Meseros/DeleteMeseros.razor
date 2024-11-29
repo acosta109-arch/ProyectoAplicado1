@@ -3,7 +3,7 @@
 @inject MeserosServices meseroServices
 @inject NavigationManager navigation
 @inject SweetAlertService Swal
-
+@attribute [Authorize(Roles = "Admin")]
 <PageTitle>Eliminar Mesero</PageTitle>
 
 <div class="container mt-5 pt-5">

@@ -1,7 +1,7 @@
 ﻿@page "/Index/Local"
 @using System.Security.Claims
 @inject AuthenticationStateProvider AuthenticationStateProvider
-
+@attribute [Authorize(Roles = "Cliente")]
 <a href="/" class="btn custom-login-btn back-button mt-4">
     <i class="fa-solid fa-right-from-bracket"></i>
 </a>

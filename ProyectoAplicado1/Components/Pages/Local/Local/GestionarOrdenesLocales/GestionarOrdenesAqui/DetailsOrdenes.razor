@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @inject OrdenesServices ordenesServices
 @inject NavigationManager navigation
-
+@attribute [Authorize(Roles = "Cliente")]
 <PageTitle>Detalles de la Orden</PageTitle>
 
 <div class="container mt-5 pt-5">

@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @inject BebidasServices bebidasServices
 @inject NavigationManager navigation
-
+@attribute [Authorize(Roles = "Admin")]
 <PageTitle>Editar bebida</PageTitle>
 
 <EditForm Model="bebidas" OnValidSubmit="Actualizar">

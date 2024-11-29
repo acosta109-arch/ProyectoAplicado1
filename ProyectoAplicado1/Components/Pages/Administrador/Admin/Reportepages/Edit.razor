@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @inject ReporteService reporteService
 @inject NavigationManager navigation
-
+@attribute [Authorize(Roles = "Admin")]
 <PageTitle>Editar Reporte</PageTitle>
 <EditForm Model="reporte" OnValidSubmit="Crear">
     <DataAnnotationsValidator />

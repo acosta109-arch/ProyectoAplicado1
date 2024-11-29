@@ -2,7 +2,7 @@
 @rendermode InteractiveServer
 @inject MeserosServices meseroServices
 @inject NavigationManager navigation
-
+@attribute [Authorize(Roles = "Admin")]
 <PageTitle>Detalles del Mesero</PageTitle>
 
 <div class="container mt-5 pt-5">

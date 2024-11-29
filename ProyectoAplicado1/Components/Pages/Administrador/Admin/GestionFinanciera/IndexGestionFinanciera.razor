@@ -1,5 +1,5 @@
 ﻿@page "/GestionFinanciera/Index"
-
+@attribute [Authorize(Roles = "Admin")]
 <a href="/Index/Admin" class="btn btn-success back-button mt-5">
     <i class="fa-solid fa-backward"></i>
 </a>
